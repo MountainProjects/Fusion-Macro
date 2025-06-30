@@ -16,7 +16,7 @@ class Task():
     def set(self, task):
         self.current = task
 
-        directory = os.fsencode("src/Paths")
+        directory = os.fsencode("src/Tasks")
         for file in os.listdir(directory):
             filename = os.fsdecode(file)
             if filename.endswith(".py") and not filename.startswith("__"):
