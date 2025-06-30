@@ -44,9 +44,9 @@ class Movement():
         keyboard.tap(key)
 
     def move(self, key, duration):
-        mult = var.movespeed/100
+        mult = var.movespeed / 100
         keyboard.press(key)
-        sleep(time*mult)
+        sleep(duration * mult)
         keyboard.release(key)
 
     def hold_mouse(self):

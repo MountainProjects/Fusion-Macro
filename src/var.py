@@ -1,2 +1,2 @@
 macro=None
-movespeed=100
+movespeed=216

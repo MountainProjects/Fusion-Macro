@@ -8,7 +8,7 @@ class PathHandler:
         print(self)
 
     def start(self):
-        var.macro.movement.walk("w", 2)
+        var.macro.movement.move("w", 2)
         pass
 
     def end(self):
