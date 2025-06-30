@@ -20,7 +20,6 @@ class Macro():
             self.movement.align_spawn()
             self.task.set()
 
-
     def start(self):
         self.task.start()
         self.path.start()
