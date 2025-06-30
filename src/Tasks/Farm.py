@@ -1,7 +1,7 @@
 import var
 
 @var.macro.task()
-class FarmTask():
+class TaskHandler():
     name = "Farm"
 
     def __init__(self):

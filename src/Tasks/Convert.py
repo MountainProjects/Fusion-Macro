@@ -2,7 +2,7 @@ from time import *
 import var
 
 @var.macro.task()
-class ConvertTask():
+class TaskHandler():
     name = "Convert"
     def __init__(self):
         pass

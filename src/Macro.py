@@ -13,11 +13,12 @@ class Macro():
         self.interface = Interface.Interface(self)
 
     def start(self):
+        self.task.start()
         self.path.start()
         self.interface.start()
 
     def restart(self):
         self.path.end()
         self.movement.align_spawn()
-        self.task.start()
+        self.task.set()
         print(self.path.current)

@@ -7,13 +7,6 @@ class Task():
         self.current = None
         self.tasks = {}
 
-        directory = os.fsencode("src/Tasks")
-        for file in os.listdir(directory):
-            filename = os.fsdecode(file)
-            if filename.endswith(".py") and not filename.startswith("__"):
-                module_name = f"Tasks.{filename[:-3]}"
-                self.tasks[filename[:-3]] = __import__(module_name, fromlist=[''])
-
     def __call__(self):
         def decorator(Task):
             if not Task.name:
@@ -31,6 +24,14 @@ class Task():
             return self.tasks[Task.name]
 
         return decorator
+    
+    def start(self):
+        directory = os.fsencode("src/Tasks")
+        for file in os.listdir(directory):
+            filename = os.fsdecode(file)
+            if filename.endswith(".py") and not filename.startswith("__"):
+                module_name = f"Tasks.{filename[:-3]}"
+                self.tasks[filename[:-3]] = __import__(module_name, fromlist=[''])
 
     def get(self):
         screen_lib = var.macro.screen
@@ -39,7 +40,7 @@ class Task():
             return "Convert"
         return "Farm"
     
-    def start(self, task=None):
+    def set(self, task=None):
         task = task or self.get()
         print(self.tasks)
         try:
