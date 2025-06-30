@@ -17,7 +17,9 @@ class Macro():
 
         @self.loop()
         def main_loop(self):
-            print("гдр в дебри")
+            self.movement.align_spawn()
+            self.task.set()
+
 
     def start(self):
         self.task.start()
@@ -33,7 +35,5 @@ class Macro():
         self.end()
         self.started = True
         
-        self.movement.align_spawn()
-        self.task.set()
         self.loop.start()
         
