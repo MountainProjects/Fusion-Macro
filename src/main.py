@@ -1,5 +1,6 @@
 import sys
 import os
+
 from Macro import Macro
 import var
 
