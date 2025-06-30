@@ -46,3 +46,9 @@ class Movement():
         keyboard.press(key)
         sleep(time*mult)
         keyboard.release(key)
+
+    def hold_mouse(self):
+        mouse.press(Button.left)
+
+    def release_mouse(self):
+        mouse.release(Button.left)
