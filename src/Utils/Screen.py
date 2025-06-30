@@ -2,6 +2,7 @@ import os
 from PIL import Image
 import pyautogui
 import numpy as np
+import var
 
 class Screen():
     def __init__(self, Macro):
@@ -20,10 +21,23 @@ class Screen():
 
     def isCorrectStartPos(self):
         region = (947, 301, 29, 30)
-        location_day: bool = self.find_image_on_region("src/assets/CorrectPosDay.png", region)
-        location_night: bool = self.find_image_on_region("src/assets/CorrectPosNight.png", region)
+        location_day = self.find_image_on_region("src/assets/CorrectPosDay.png", region)
+        location_night = self.find_image_on_region("src/assets/CorrectPosNight.png", region)
 
-        return (location_day >= 0.4 or location_night >= 0.4)    
+        match_value = max(location_day, location_night)
+
+        print(f"Match value: {match_value}")
+
+        if 0.2 < match_value < 0.5:
+            var.macro.movement.shiftlock()
+            return True
+        elif match_value <= 0.2:
+            return None
+        elif match_value >= 0.5:
+            return True
+
+        
+
 
     def get_screen_color(self, position):
         """

@@ -65,6 +65,11 @@ class Movement():
         sleep(0.05)
         keyboard.release(Key.space)
 
+    def shiftlock(self):
+        keyboard.press(Key.shift_l)
+        sleep(0.05)
+        keyboard.release(Key.shift_l)
+
     def move(self, key, duration):
         print("Иду нахрен")
         mult = var.movespeed / 100
