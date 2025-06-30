@@ -5,6 +5,7 @@ class Macro():
         self.started = False
         self.thread = None
         self.paths = {}
+        self.patterns = {}
 
         self.path = Path.Path(self)
         self.convert = Convert.Convert(self)
@@ -23,6 +24,7 @@ class Macro():
     def start(self):
         self.task.start()
         self.path.start()
+        self.pattern.start()
         self.interface.start()
 
     def end(self):

@@ -50,10 +50,15 @@ class Pattern():
 
         repeats = 0
 
+        print("РАНЮ ПАТЕРН")
+
         while not screen.is_backpack_full():
+            print("НЕ ЗАПОЛНИЛСЯ Я ЕЩЕ")
             if repeats >= self.current.realign_repeats:
+                print("РЕ АЛАЙНЮСЬ А ТО ПИЗДА БУДЕТ")
                 repeats = 0
                 self.current.realign()
                 continue
             self.current.start()
+            print("ИДУ ПО ПАТЕРНУ")
             repeats += 1
