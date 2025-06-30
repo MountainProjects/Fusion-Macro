@@ -7,13 +7,36 @@ class Screen():
     def __init__(self, Macro):
         self.Macro = Macro
 
+    def is_backpack_full(self):
+        x, y = (1808, 47)
+        color = self.get_screen_color((x, y))
+        print(color)
+        return color == (140, 39, 39)
+
+    def is_backpack_empty(self):
+        x, y = (1617, 47)
+        color = self.get_screen_color((x, y))
+        return color == (40,40,40)
+
     def isCorrectStartPos(self):
         region = (947, 301, 29, 30)
-        location_day: bool = find_exact_color_match("assets/CorrectPosDay.png", region, 40)
-        location_night: bool = find_exact_color_match("assets/CorrectPosNight.png", region, 40)
+        location_day: bool = self.find_image_on_region("assets/CorrectPosDay.png", region, 40)
+        location_night: bool = self.find_image_on_region("assets/CorrectPosNight.png", region, 40)
 
         return (location_day or location_night)    
-    
+
+    def get_screen_color(position):
+        """
+        Возвращает цвет пикселя на экране по координатам.
+
+        :param position: (x, y)
+            :return: (R, G, B)
+        """
+        x, y = position
+        screenshot = pyautogui.screenshot(region=(x, y, 1, 1))
+        color = screenshot.getpixel((0, 0))
+        return color
+
     def find_image_on_region(self, image_path, region):
         """
         Возвращает процент совпадения области на экране с указанным изображением
@@ -47,7 +70,7 @@ class Screen():
 
         return match_percent
 
-    def make_screenshot(self, region:(), save:bool = True):
+    def make_screenshot(self, region, save:bool = True):
         x, y, width, height = region
 
         screenshot = pyautogui.screenshot(region=(x,y, width, height))
