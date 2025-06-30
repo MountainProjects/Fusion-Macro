@@ -21,4 +21,4 @@ class Macro():
         self.path.end()
         self.movement.align_spawn()
         self.task.set()
-        print(self.path.current)
+        print(f"PATH_CURRENT:{self.path.current}")

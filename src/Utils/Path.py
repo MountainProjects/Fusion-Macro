@@ -41,5 +41,5 @@ class Path():
     def set(self, name):
         if not name:
             raise ValueError("Path name cannot be empty")
-        
+
         self.current = self.macro.paths[name]

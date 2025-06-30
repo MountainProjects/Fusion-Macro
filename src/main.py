@@ -17,4 +17,5 @@ var.macro = Macro()
 var.macro.start()
 
 var.macro.path.set("bebil")
+print(var.macro.path.current)
 var.macro.restart()
