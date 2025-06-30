@@ -18,7 +18,7 @@ class Task():
             Task.macro = self.macro
             Task.__repr__ = lambda self: f"<Macro Task '{Task.name}'>"
             Task.__str__ = lambda self: f"<Macro Task '{Task.name}'>"
-            Task.__bool__ = lambda self: self.current and self.current.name == Task.name
+            Task.__bool__ = lambda _: self.current and self.current.name == Task.name
 
             self.tasks[Task.name] = Task()
             return self.tasks[Task.name]
