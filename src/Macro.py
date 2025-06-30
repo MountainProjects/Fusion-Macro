@@ -4,7 +4,9 @@ class Macro():
     def __init__(self):
         self.started = False
         self.thread = None
+
         self.paths = {}
+        self.tasks = {}
         self.patterns = {}
 
         self.path = Path.Path(self)

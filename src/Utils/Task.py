@@ -5,14 +5,13 @@ class Task():
     def __init__(self, Macro):
         self.macro = Macro
         self.current = None
-        self.tasks = {}
 
     def __call__(self):
         def decorator(Task):
             if not Task.name:
                 raise ValueError("Task class must have a 'name' attribute")
 
-            if Task.name in self.tasks:
+            if Task.name in self.macro.tasks:
                 raise ValueError(f"Task with name '{Task.name}' already exists")
             
             Task.macro = self.macro
@@ -20,8 +19,8 @@ class Task():
             Task.__str__ = lambda self: f"<Macro Task '{Task.name}'>"
             Task.__bool__ = lambda _: self.current is not None and self.current.name == Task.name
 
-            self.tasks[Task.name] = Task()
-            return self.tasks[Task.name]
+            self.macro.tasks[Task.name] = Task()
+            return self.macro.tasks[Task.name]
 
         return decorator
     
@@ -42,10 +41,9 @@ class Task():
     
     def set(self, task=None):
         task = task or self.get()
-        print(self.tasks)
         try:
-            self.tasks[task]
+            self.macro.tasks[task]
         except ValueError:
             raise ValueError(f"No task {task} in macro's tasks list.")
         self.current = task
-        self.tasks[task].start()
+        self.macro.tasks[task].start()

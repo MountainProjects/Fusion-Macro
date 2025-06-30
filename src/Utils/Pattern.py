@@ -20,7 +20,7 @@ class Pattern():
             Pattern.__bool__ = lambda _: self.current is not None and self.current.name == Pattern.name
 
             self.macro.patterns[Pattern.name] = Pattern()
-            return self.macro.paths[Pattern.name]
+            return self.macro.patterns[Pattern.name]
 
         return decorator
 
