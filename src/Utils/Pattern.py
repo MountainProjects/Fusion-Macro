@@ -59,6 +59,6 @@ class Pattern():
                 repeats = 0
                 self.current.realign()
                 continue
-            self.current.start()
+            self.current.pattern()
             print("ИДУ ПО ПАТЕРНУ")
             repeats += 1

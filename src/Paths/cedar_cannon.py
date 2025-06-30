@@ -21,7 +21,7 @@ class PathHandler:
         jump()
         walk("w", 1)
         jump()
-        walk("w", 0.5)
+        walk("w", 0.65)
         press("e")
         sleep(0.92)
         jump()

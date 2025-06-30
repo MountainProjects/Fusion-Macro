@@ -18,4 +18,4 @@ var.macro.start()
 
 var.macro.path.set("cedar_cannon")
 print(var.macro.path.current)
-var.macro.restart() 
+var.macro.restart()

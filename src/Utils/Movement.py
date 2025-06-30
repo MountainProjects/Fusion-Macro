@@ -13,11 +13,10 @@ class Movement():
     def __init__(self, Macro):
         self.Macro = Macro
 
-    def correct_lang(self):
-        """
-        Проверяет текущий язык системы и сетает его на английский
-        """
+    def correct(self):
         py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
+        mouse.scroll(0, 5)
+        #TODO ДЕТЕКТ ШИФТ ЛОКА И ШИФТ ЛОК
 
     def align_spawn(self):
         """
