@@ -25,7 +25,7 @@ class Screen():
 
         return (location_day or location_night)    
 
-    def get_screen_color(position):
+    def get_screen_color(self, position):
         """
         Возвращает цвет пикселя на экране по координатам.
 
