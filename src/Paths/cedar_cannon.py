@@ -29,7 +29,7 @@ class PathHandler:
         jump()
         walk("w", 3)
         accuracy = check_image("src/assets/CorrectPos_Cedar.png", (555, 260, 10,10))
-        if accuracy < 0.5:
+        if accuracy < 0.2:
             return False
         sleep(1)
         camera_rotate(158)

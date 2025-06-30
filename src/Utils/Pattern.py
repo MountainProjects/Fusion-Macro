@@ -43,7 +43,7 @@ class Pattern():
             self.current = None
             return
 
-        self.current = self.macro.paths[name]
+        self.current = self.macro.patterns[name]
 
     def run_current(self):
         screen = var.macro.screen
