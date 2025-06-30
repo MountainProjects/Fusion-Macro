@@ -1,7 +1,7 @@
 import var
 
 @var.macro.path()
-class Path:
+class PathHandler:
     name = "bebil"
 
     def __init__(self):
