@@ -8,4 +8,5 @@ class PathHandler:
         print(self)
 
     def start(self):
-        var.macro.Movement
+        movement = var.macro.movement
+        movement.walk("w", 4) # Бебильная ходьба нахрен!!!!!!!
