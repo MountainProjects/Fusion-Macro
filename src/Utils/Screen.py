@@ -51,8 +51,8 @@ class Screen():
 
         screenshot = pyautogui.screenshot(region=(x,y, width, height)).convert("RGB")
 
-        # ТЕСТ ФУНКЦИЯ ДЛЯ СКРИНА ТОГО ЧТО ОНО ПРОВЕРЯЕТ (ДЕБАГ)
-        #screenshot.save("assets/DEBUG.png")
+         #ТЕСТ ФУНКЦИЯ ДЛЯ СКРИНА ТОГО ЧТО ОНО ПРОВЕРЯЕТ (ДЕБАГ)
+        screenshot.save("src/assets/DEBUG.png")
 
         if img.size != screenshot.size:
             return False
@@ -67,6 +67,8 @@ class Screen():
         match_count = np.sum(matches)
 
         match_percent = (match_count / total_pixels)
+
+        print(f"{match_percent}%")
 
         return match_percent
 

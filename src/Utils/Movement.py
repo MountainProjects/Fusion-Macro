@@ -34,8 +34,10 @@ class Movement():
 
     def reset_character(self):
         keyboard.tap(Key.esc)
+        sleep(0.2)
         keyboard.tap("r")
         keyboard.tap("к")
+        sleep(0.2)
         keyboard.tap(Key.enter)
 
     def tap_key(self, key:Key):

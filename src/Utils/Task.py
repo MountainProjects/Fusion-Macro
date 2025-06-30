@@ -4,6 +4,7 @@ import os
 class Task():
     def __init__(self, Macro):
         self.macro = Macro
+        self.tasks = {}
 
         directory = os.fsencode("src/Tasks")
         for file in os.listdir(directory):
