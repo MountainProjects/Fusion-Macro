@@ -2,6 +2,7 @@ from time import *
 from pynput.keyboard import Key, Controller as KeyboardController
 from pynput.mouse import Button, Controller as MouseController
 
+import py_win_keyboard_layout
 import ctypes
 import var
 
@@ -16,13 +17,7 @@ class Movement():
         """
         Проверяет текущий язык системы и сетает его на английский
         """
-        lang = ctypes.windll.kernel32.GetUserDefaultUILanguage()
-        if lang != 1033:
-            englishLayout = 0x0409  # English language ID
-            englishKeyboard = 0x00000409  # US keyboard layout
-
-            ctypes.windll.user32.LoadKeyboardLayoutW(hex(englishKeyboard), 1)
-            ctypes.windll.user32.ActivateKeyboardLayout(englishKeyboard, 0)
+        py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
 
     def align_spawn(self):
         """
