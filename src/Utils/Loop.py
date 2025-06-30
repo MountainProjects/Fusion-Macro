@@ -30,7 +30,7 @@ class Loop():
 
     def loop(self):
         while self.macro.started and not self.to_stop:
-            pass
+            self.func()
 
         self.to_stop = False
         self.thread = None
