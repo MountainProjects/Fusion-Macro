@@ -43,7 +43,13 @@ class Movement():
     def tap_key(self, key:Key):
         keyboard.tap(key)
 
+    def jump(self):
+        keyboard.press(Key.space)
+        sleep(0.05)
+        keyboard.release(Key.space)
+
     def move(self, key, duration):
+        print("Иду нахрен")
         mult = var.movespeed / 100
         keyboard.press(key)
         sleep(duration * mult)
@@ -54,3 +60,14 @@ class Movement():
 
     def release_mouse(self):
         mouse.release(Button.left)
+
+    def camera_rotate(self, degree):
+        hold_time = abs(degree) / 117.65
+        if degree < 0:
+            keyboard.press(Key.left)
+            sleep(hold_time)
+            keyboard.release(Key.left)
+        else:
+            keyboard.press(Key.right)
+            sleep(hold_time)
+            keyboard.release(Key.right)

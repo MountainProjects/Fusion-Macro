@@ -13,3 +13,6 @@ class TaskHandler():
             return
         
         current_path.start()
+        var.macro.movement.hold_mouse()
+        var.macro.pattern.set("cedar_default")
+        var.macro.pattern.run_current()

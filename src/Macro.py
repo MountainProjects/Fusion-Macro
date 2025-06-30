@@ -1,4 +1,4 @@
-from Utils import Convert, Screen, Path, Movement, Task, Interface, Loop
+from Utils import Convert, Screen, Path, Movement, Task, Interface, Loop, Pattern
 import threading
 
 class Macro():
@@ -14,6 +14,7 @@ class Macro():
         self.task = Task.Task(self)
         self.interface = Interface.Interface(self)
         self.loop = Loop.Loop(self)
+        self.pattern = Pattern.Pattern(self)
 
         @self.loop()
         def main_loop():
