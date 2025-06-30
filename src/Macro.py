@@ -1,5 +1,4 @@
 from Utils import Convert, Screen, Path, Movement, Task, Interface, Loop, Pattern
-import threading
 
 class Macro():
     def __init__(self):
