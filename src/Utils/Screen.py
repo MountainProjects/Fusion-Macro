@@ -20,8 +20,8 @@ class Screen():
 
     def isCorrectStartPos(self):
         region = (947, 301, 29, 30)
-        location_day: bool = self.find_image_on_region("assets/CorrectPosDay.png", region)
-        location_night: bool = self.find_image_on_region("assets/CorrectPosNight.png", region)
+        location_day: bool = self.find_image_on_region("src/assets/CorrectPosDay.png", region)
+        location_night: bool = self.find_image_on_region("src/assets/CorrectPosNight.png", region)
 
         return (location_day >= 40 or location_night >= 40)    
 
@@ -61,9 +61,9 @@ class Screen():
         screen_numpy = np.array(screenshot).astype(int)
 
         difference = np.abs(img_numpy - screen_numpy)
-        differency_sum = differency_sum(axis=2)
+        differency_sum = difference.sum(axis=2)
 
-        matches = difference <= 10 # Я ХЗ 10 ЭТО ТИПА tolerance мне чат гпт так сказал
+        matches = differency_sum <= 10 # Я ХЗ 10 ЭТО ТИПА tolerance мне чат гпт так сказал
         match_count = np.sum(matches)
 
         match_percent = (match_count / total_pixels)
