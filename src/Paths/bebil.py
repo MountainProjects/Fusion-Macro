@@ -8,4 +8,7 @@ class PathHandler:
         print(self)
 
     def start(self):
-        var.macro.Movement
+        pass
+
+    def end(self):
+        pass

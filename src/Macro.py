@@ -11,6 +11,9 @@ class Macro():
         self.screen = Screen.Screen(self)
         self.movement = Movement.Movement(self)
 
+    def get_path(self):
+        return self.paths[self.current_path]
+
     def start(self):
         self.path.start()
         
