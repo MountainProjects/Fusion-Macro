@@ -36,10 +36,10 @@ class Path():
             return
         
         self.current.end()
-        self.current = None
 
-    def set(self, name):
+    def set(self, name=None):
         if not name:
-            raise ValueError("Path name cannot be empty")
+            self.current = None
+            return
 
         self.current = self.macro.paths[name]
