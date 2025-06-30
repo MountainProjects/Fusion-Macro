@@ -14,4 +14,6 @@ class Macro():
     def start(self):
         self.path.start()
         
-        
+    def restart(self):
+        print("сделать бебильно тут чтоб рестарт был")
+        print(self.current_path)

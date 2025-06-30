@@ -6,3 +6,6 @@ class PathHandler:
 
     def __init__(self):
         print(self)
+
+    def start(self):
+        var.macro.Movement
