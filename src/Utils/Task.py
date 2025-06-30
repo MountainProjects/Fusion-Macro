@@ -4,12 +4,13 @@ import os
 class Task():
     def __init__(self, Macro):
         self.macro = Macro
+        self.tasks = {}
 
         directory = os.fsencode("src/Tasks")
         for file in os.listdir(directory):
             filename = os.fsdecode(file)
             if filename.endswith(".py") and not filename.startswith("__"):
-                module_name = f"Paths.{filename[:-3]}"
+                module_name = f"Tasks.{filename[:-3]}"
                 self.tasks[module_name] = __import__(module_name, fromlist=[''])
 
         self.current = None
