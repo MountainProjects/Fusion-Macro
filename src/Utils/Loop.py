@@ -21,12 +21,14 @@ class Loop():
         self.thread = threading.Thread(target=self.loop)
         self.thread.start()
 
-    def stop(self):
+    def stop(self, in_the_thread=False):
         if not self.thread or not self.thread.is_alive():
             return
 
         self.to_stop = True
-        self.thread.join()
+
+        if not in_the_thread:
+            self.thread.join()
 
     def loop(self):
         while self.macro.started and not self.to_stop:
