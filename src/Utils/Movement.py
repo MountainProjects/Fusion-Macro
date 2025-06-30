@@ -9,12 +9,19 @@ import var
 keyboard = KeyboardController()
 mouse = MouseController()
 
+import pynput
+
 class Movement():
     def __init__(self, Macro):
         self.Macro = Macro
 
     def correct(self):
-        py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
+        klid = ctypes.windll.user32.LoadKeyboardLayoutW("00000409", 1)
+
+        ctypes.windll.user32.ActivateKeyboardLayout(klid, 0)
+        keyboard = KeyboardController()
+        mouse = MouseController()
+
         mouse.scroll(0, 5)
         #TODO ДЕТЕКТ ШИФТ ЛОКА И ШИФТ ЛОК
 

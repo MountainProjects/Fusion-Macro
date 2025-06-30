@@ -23,7 +23,7 @@ class PathHandler:
         jump()
         walk("w", 0.65)
         press("e")
-        sleep(0.92)
+        sleep(0.9)
         jump()
         sleep(8)
         jump()
