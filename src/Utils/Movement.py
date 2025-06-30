@@ -14,12 +14,12 @@ class Movement():
         """
         Резетает персонажа до тех пор пока не будет правильная позиция спавна и камеры
         """
-        correct = self.Macro.Screen.isCorrectStartPos()
+        correct = self.Macro.screen.isCorrectStartPos()
         if correct:
             return
 
         while not correct:
-            aligned = self.Macro.Screen.isCorrectStartPos()
+            aligned = self.Macro.screen.isCorrectStartPos()
             if aligned:
                 break
 
