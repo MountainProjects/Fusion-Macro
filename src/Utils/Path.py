@@ -16,7 +16,7 @@ class Path():
             Path.macro = self.macro
             Path.__repr__ = lambda self: f"<Macro Path '{Path.name}'>"
             Path.__str__ = lambda self: f"<Macro Path '{Path.name}'>"
-            Path.__bool__ = lambda _: self.current and self.current.name == Path.name
+            Path.__bool__ = lambda _: self.current is not None and self.current.name == Path.name
 
             self.macro.paths[Path.name] = Path()
             return self.macro.paths[Path.name]
