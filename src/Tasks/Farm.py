@@ -12,7 +12,10 @@ class TaskHandler():
         if not current_path:
             return
         
-        current_path.start()
+        result = current_path.start()
+        if not result:
+            var.macro.restart()
+            return
         var.macro.movement.hold_mouse()
         var.macro.pattern.set("cedar_default")
         var.macro.pattern.run_current()
