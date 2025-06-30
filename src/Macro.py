@@ -1,4 +1,4 @@
-from Utils import Convert, Screen, Path
+from Utils import Convert, Screen, Path, Movement
 
 class Macro():
     def __init__(self):
@@ -9,7 +9,9 @@ class Macro():
         self.path = Path.Path(self)
         self.convert = Convert.Convert(self)
         self.screen = Screen.Screen(self)
+        self.movement = Movement.Movement(self)
 
     def start(self):
         self.path.start()
-        print("я макросю, я бебилище")
+        self.movement.reset_character() # А ВОТ ВСЕ РЕЗЕТАЮ ТЕБЯ
+        
