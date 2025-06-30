@@ -22,7 +22,7 @@ class Task():
             return "Convert"
         return "Farm"
     
-    def start(self, task):
+    def start(self, task=None):
         task = task or self.get()
 
         try:
