@@ -13,4 +13,3 @@ class Macro():
     def start(self):
         self.path.start()
         print("я макросю, я бебилище")
-        
