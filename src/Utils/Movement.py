@@ -18,7 +18,11 @@ class Movement():
         """
         lang = ctypes.windll.kernel32.GetUserDefaultUILanguage()
         if lang != 1033:
-            ctypes.windll.kernel32.SetUserDefaultUILanguage(1033)
+            englishLayout = 0x0409  # English language ID
+            englishKeyboard = 0x00000409  # US keyboard layout
+
+            ctypes.windll.user32.LoadKeyboardLayoutW(hex(englishKeyboard), 1)
+            ctypes.windll.user32.ActivateKeyboardLayout(englishKeyboard, 0)
 
     def align_spawn(self):
         """
