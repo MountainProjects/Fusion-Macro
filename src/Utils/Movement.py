@@ -26,13 +26,22 @@ class Movement():
             self.reset_character()
             sleep(4.5)
 
-    def reset_character():
+    def stop_movement(self):
+        keyboard.release("w")
+        keyboard.release("a")
+        keyboard.release("s")
+        keyboard.release("d")
+
+    def reset_character(self):
         keyboard.tap(Key.esc)
         keyboard.tap("r")
         keyboard.tap("к")
         keyboard.tap(Key.enter)
 
-    def move(key, duration):
+    def tap_key(self, key:Key):
+        keyboard.tap(key)
+
+    def move(self, key, duration):
         mult = var.movespeed/100
         keyboard.press(key)
         sleep(time*mult)
