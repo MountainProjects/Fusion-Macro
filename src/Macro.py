@@ -1,4 +1,4 @@
-from Utils import Convert, Screen, Path, Movement, Task, Interface
+from Utils import Convert, Screen, Path, Movement, Task, Interface, Loop
 import threading
 
 class Macro():
@@ -13,23 +13,27 @@ class Macro():
         self.movement = Movement.Movement(self)
         self.task = Task.Task(self)
         self.interface = Interface.Interface(self)
+        self.loop = Loop.Loop(self)
+
+        @self.loop()
+        def main_loop(self):
+            print("гдр в дебри")
 
     def start(self):
         self.task.start()
         self.path.start()
         self.interface.start()
 
-    def loop(self):
-        while self.started:
-            print("гдр в дебри")
+    def end(self):
+        self.started = False
+        self.path.end()
+        self.loop.stop()
 
     def restart(self):
-        if self.thread:
-            #гдр не знает дебрей
-            pass
-        self.path.end()
+        self.end()
+        self.started = True
+        
         self.movement.align_spawn()
         self.task.set()
-        self.thread = threading.Thread(target=self.loop)
-        self.thread.start()
+        self.loop.start()
         
