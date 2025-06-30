@@ -23,7 +23,7 @@ class Screen():
         location_day: bool = self.find_image_on_region("src/assets/CorrectPosDay.png", region)
         location_night: bool = self.find_image_on_region("src/assets/CorrectPosNight.png", region)
 
-        return (location_day >= 40 or location_night >= 40)    
+        return (location_day >= 0.4 or location_night >= 0.4)    
 
     def get_screen_color(self, position):
         """
