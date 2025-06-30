@@ -20,8 +20,8 @@ class Screen():
 
     def isCorrectStartPos(self):
         region = (947, 301, 29, 30)
-        location_day: bool = self.find_image_on_region("assets/CorrectPosDay.png", region)
-        location_night: bool = self.find_image_on_region("assets/CorrectPosNight.png", region)
+        location_day: bool = self.find_image_on_region("src/assets/CorrectPosDay.png", region)
+        location_night: bool = self.find_image_on_region("src/assets/CorrectPosNight.png", region)
 
         return (location_day >= 40 or location_night >= 40)    
 
