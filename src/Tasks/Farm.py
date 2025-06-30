@@ -1,6 +1,9 @@
 import var
 
-class Farm():
+@var.macro.task()
+class FarmTask():
+    name = "Farm"
+
     def __init__(self):
         pass
 

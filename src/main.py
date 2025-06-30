@@ -16,5 +16,5 @@ time.sleep(3)
 var.macro = Macro()
 var.macro.start()
 
-#var.macro.path.set("bebil")
-#var.macro.restart()
+var.macro.path.set("bebil")
+var.macro.restart()

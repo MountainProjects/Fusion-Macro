@@ -1,7 +1,9 @@
 from time import *
 import var
 
-class Convert():
+@var.macro.task()
+class ConvertTask():
+    name = "Convert"
     def __init__(self):
         pass
 
