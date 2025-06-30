@@ -16,6 +16,13 @@ class Macro():
 
     def start(self):
         self.path.start()
+
+    def reset_path(self):
+        if self.current_path is None:
+            raise ValueError("No path is currently set.")
+        
+        self.paths[self.current_path].end()
+        self.current_path = None
         
     def restart(self):
         print("сделать бебильно тут чтоб рестарт был")
