@@ -13,5 +13,5 @@ class Macro():
 
     def start(self):
         self.path.start()
-        self.movement.reset_character() # А ВОТ ВСЕ РЕЗЕТАЮ ТЕБЯ
+        
         

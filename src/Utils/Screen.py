@@ -12,23 +12,7 @@ class Screen():
         location_day: bool = find_exact_color_match("assets/CorrectPosDay.png", region, 40)
         location_night: bool = find_exact_color_match("assets/CorrectPosNight.png", region, 40)
 
-        return (location_day or location_night)
-
-    def align_spawn(self):
-        """
-        Резетает персонажа до тех пор пока не будет правильная позиция спавна и камеры
-        """
-        correct = self.isCorrectStartPos()
-        if correct:
-            return
-
-        while not correct:
-            aligned = self.isCorrectStartPos()
-            if aligned:
-                break
-
-            self.Macro.movement.reset_character()
-            sleep(4.5)
+        return (location_day or location_night)    
     
     def find_image_on_region(self, image_path, region):
         """
