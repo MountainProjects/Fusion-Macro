@@ -20,6 +20,7 @@ class Macro():
 
         @self.loop()
         def main_loop():
+            self.correct_lang()
             self.movement.align_spawn()
             self.task.set()
 

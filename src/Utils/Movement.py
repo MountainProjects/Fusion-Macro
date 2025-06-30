@@ -23,8 +23,7 @@ class Movement():
         """
         Резетает персонажа до тех пор пока не будет правильная позиция спавна и камеры
         """
-
-        self.correct_lang()
+        
         correct = self.Macro.screen.isCorrectStartPos()
 
         if correct:
