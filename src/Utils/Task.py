@@ -21,7 +21,9 @@ class Task():
             return "Convert"
         return "Farm"
     
-    def start_task(self, task):
+    def start(self, task):
+        task = task or self.get()
+
         try:
             self.tasks[task]
         except ValueError:
