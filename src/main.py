@@ -8,11 +8,7 @@ project_root = os.path.dirname(current_path)
 sys.path.append(project_root)
 
 from Macro import Macro
+import var
 
-macro = Macro()
-macro.start()
-
-@macro.path(name="bebil")
-class bebil:
-    def __init__(self, Macro):
-        print("bebil started", self, Macro)
+var.macro = Macro()
+var.macro.start()
