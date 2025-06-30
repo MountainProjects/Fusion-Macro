@@ -1,6 +1,6 @@
 import os
 
-class Path(): # https://cdn.discordapp.com/attachments/1254571495167098941/1313681768574091275/copy_84877E2E-E21A-463A-AA2D-A728D047E8FE.gif?ex=6863e5bc&is=6862943c&hm=f546bc786a746e31bc973262fd56d13602c58972343f781a950e482050d91378&
+class Path():
     def __init__(self, macro):
         self.macro = macro
         self.current = None
