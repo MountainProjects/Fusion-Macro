@@ -12,7 +12,7 @@ class Movement():
     def __init__(self, Macro):
         self.Macro = Macro
 
-    def correct_locale(self):
+    def correct_lang(self):
         """
         Проверяет текущий язык системы и сетает его на английский
         """
@@ -24,7 +24,10 @@ class Movement():
         """
         Резетает персонажа до тех пор пока не будет правильная позиция спавна и камеры
         """
+
+        self.correct_lang()
         correct = self.Macro.screen.isCorrectStartPos()
+
         if correct:
             return
 
