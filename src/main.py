@@ -12,3 +12,6 @@ import var
 
 var.macro = Macro()
 var.macro.start()
+
+var.macro.path.set("bebil")
+var.macro.restart()

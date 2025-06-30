@@ -12,6 +12,7 @@ class Path():
             if Path.name in self.macro.paths:
                 raise ValueError(f"Path with name '{Path.name}' already exists")
             
+            Path.macro = self.macro
             Path.__repr__ = lambda self: f"<Macro Path '{Path.name}'>"
             Path.__str__ = lambda self: f"<Macro Path '{Path.name}'>"
             Path.__bool__ = lambda self: self.macro.current_path == Path.name
