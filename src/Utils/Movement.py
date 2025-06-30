@@ -1,6 +1,8 @@
 from time import *
 from pynput.keyboard import Key, Controller as KeyboardController
 from pynput.mouse import Button, Controller as MouseController
+
+import ctypes
 import var
 
 keyboard = KeyboardController()
@@ -9,6 +11,14 @@ mouse = MouseController()
 class Movement():
     def __init__(self, Macro):
         self.Macro = Macro
+
+    def correct_locale(self):
+        """
+        Проверяет текущий язык системы и сетает его на английский
+        """
+        lang = ctypes.windll.kernel32.GetUserDefaultUILanguage()
+        if lang != 1033:
+            ctypes.windll.kernel32.SetUserDefaultUILanguage(1033)
 
     def align_spawn(self):
         """
