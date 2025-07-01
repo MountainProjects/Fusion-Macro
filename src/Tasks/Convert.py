@@ -14,7 +14,7 @@ class TaskHandler():
         movement_lib.move("w", 1.05)
         movement_lib.tap_key("e")
         print("Converting...")
-        while not screen_lib.is_backpack_empty() or not var.macro.started:
+        while not screen_lib.is_backpack_empty() and var.macro.started:
             sleep(0.5)
         if not var.macro.started:
             return
