@@ -50,7 +50,7 @@ class Pattern():
 
         repeats = 0
 
-        while not screen.is_backpack_full():
+        while not screen.is_backpack_full() and self.macro.started:
             if repeats != 0 and repeats % self.current.realign_repeats == 0:
                 print("Re-aligning...")
                 repeats = 0
