@@ -2,14 +2,12 @@ from time import *
 from pynput.keyboard import Key, Controller as KeyboardController
 from pynput.mouse import Button, Controller as MouseController
 
-import py_win_keyboard_layout
 import ctypes
 import var
+import threading
 
 var.keyboard = KeyboardController()
 var.mouse = MouseController()
-
-import pynput
 
 class Movement():
     def __init__(self, Macro):
@@ -29,20 +27,35 @@ class Movement():
         Резетает персонажа до тех пор пока не будет правильная позиция спавна и камеры
         """
 
-        correct = self.Macro.screen.isCorrectStartPos()
+        self.reset_character()
+        self.correct()
 
-        if correct:
-            return
+        sleep(4.5)
 
-        while not correct:
-            aligned = self.Macro.screen.isCorrectStartPos()
-            if aligned:
-                break
+        aligned = self.Macro.screen.isCorrectStartPos()
+        
+        if aligned:
+            self.align_spawn_position()
+        else:
+            self.camera_rotate(-15)
+            self.align_spawn_position()
 
-            self.reset_character()
-            self.correct()
+        
 
-            sleep(4.5)
+    def align_spawn_position(self):
+        self.move("w", 6)
+        self.move("d", 5)
+
+        var.keyboard.press("w")
+        var.keyboard.press("d")
+
+        sleep(2)
+
+        var.keyboard.release("w")
+        var.keyboard.release("d")
+
+        self.move("a", 0.75)
+        self.move("s", 4.15)
 
     def stop_movement(self):
         var.keyboard.release("w")

@@ -50,8 +50,6 @@ class Task():
         except ValueError:
             raise ValueError(f"No task {task} in macro's tasks list.")
         self.current = task
-        
-        print(self.macro.path.current)
-        print(self.macro.pattern.current)
+
 
         self.macro.tasks[task].start()

@@ -1,5 +1,6 @@
 import var
 
+
 @var.macro.task()
 class TaskHandler():
     name = "Farm"
@@ -8,8 +9,10 @@ class TaskHandler():
         pass
 
     def start(self):
-        current_path = var.macro.path.current
-        if not current_path:
+        print(self.macro.paths)
+        current_path = self.macro.paths['cedar_cannon']
+        if current_path is None:
+            print("No path.")
             return
         
         result = current_path.start()

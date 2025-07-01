@@ -1,8 +1,9 @@
 import os
-from PIL import Image
+from PIL import Image, ImageGrab
 import pyautogui
 import numpy as np
 import var
+import cv2
 
 class Screen():
     def __init__(self, Macro):
@@ -19,22 +20,44 @@ class Screen():
         return color == (40,40,40)
 
     def isCorrectStartPos(self):
-        region = (947, 301, 29, 30)
-        location_day = self.find_image_on_region("src/assets/CorrectPosDay.png", region)
-        location_night = self.find_image_on_region("src/assets/CorrectPosNight.png", region)
+        screen_width, screen_height = 1920, 1080  # или твоя функция получения размера
 
-        match_value = max(location_day, location_night)
+        center_x = screen_width // 2
 
-        if match_value < 0.5 and match_value > 0.2:
-            var.macro.movement.shiftlock()
-            return True
-        elif match_value <= 0.2:
-            return None
-        elif match_value >= 0.5:
-            return True
+        # Зона: ширина 200 пикселей, вся высота
+        region = (
+            center_x - 100,
+            0,
+            center_x + 100,
+            screen_height
+        )
+        
+        day_score = self.find_template_similarity("src/assets/CorrectPosDay.png", region)
+        night_score = self.find_template_similarity("src/assets/CorrectPosNight.png", region)
+
+        print(f"DAY: {day_score*100}%")
+        print(f"NIGHT: {night_score*100}%")
+
+        if day_score >= 0.5 or night_score >= 0.5:
+            return True        
+        else:
+            return False
 
         
+    def find_template_similarity(self, template_path, region):
+        # Загружаем шаблон
+        template = cv2.imread(template_path, cv2.IMREAD_COLOR)
+        template_h, template_w = template.shape[:2]
 
+        # Делаем скриншот региона
+        screenshot = ImageGrab.grab(bbox=region)
+        screenshot = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
+
+        # Сопоставляем шаблон
+        res = cv2.matchTemplate(screenshot, template, cv2.TM_CCOEFF_NORMED)
+        min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+
+        return max_val
 
     def get_screen_color(self, position):
         """

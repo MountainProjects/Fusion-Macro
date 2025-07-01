@@ -12,7 +12,7 @@ class PatternHandler:
     name = "cedar_default"
 
     def __init__(self):
-        self.realign_repeats = 5
+        self.realign_repeats = 6
 
     def pattern(self):
         walk = var.macro.movement.move
@@ -22,6 +22,7 @@ class PatternHandler:
             walk("a", side_duration)
             walk("s", w_duration)
             walk("a", side_duration)
+            
         walk("d", side_duration * (repeats * 2))
 
     def realign(self):
@@ -29,4 +30,4 @@ class PatternHandler:
         
         walk("s", 9.3)
         sleep(0.5)
-        walk("w", 2.04)
+        walk("w", 2.4)

@@ -18,7 +18,8 @@ class PathHandler:
 
         var.macro.paths["cannon_default"].start()
         press("e")
-        sleep(0.9)
+        sleep(0.96)
+
         jump()
         sleep(8)
         jump()
@@ -28,7 +29,7 @@ class PathHandler:
             return False
         sleep(1)
         camera_rotate(158)
-        walk("w", 2.44)
+        walk("w", 2.4)
         return True
 
     def end(self):
