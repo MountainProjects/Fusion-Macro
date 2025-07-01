@@ -526,6 +526,8 @@ class Interface():
         self.selectedPattern.set(patternId)  # Store ID here
         self.macro.pattern.set(patternId)   # Update macro with ID
 
+        print(patternId)
+
         # Save pattern ID to db
         existing = self.settings_db.getByQuery({"key": "selected-pattern"})
         if existing:
