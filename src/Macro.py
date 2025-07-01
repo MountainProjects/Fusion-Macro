@@ -1,4 +1,4 @@
-from Utils import Convert, Screen, Path, Movement, Task, Interface, Loop, Pattern
+from Utils import Screen, Path, Movement, Task, Interface, Loop, Pattern
 
 class Macro():
     def __init__(self):
@@ -10,7 +10,6 @@ class Macro():
         self.patterns = {}
 
         self.path = Path.Path(self)
-        self.convert = Convert.Convert(self)
         self.screen = Screen.Screen(self)
         self.movement = Movement.Movement(self)
         self.task = Task.Task(self)
