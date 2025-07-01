@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
 import tkinter.font as tkFont
+import tkinter.messagebox as messagebox
 
 class Interface():
     def __init__(self, macro):
-        # todo: make binds
         self.macro = macro
         self.window = None
         self.fieldDropdown = None
@@ -20,6 +20,9 @@ class Interface():
         self.window.title("Fusion Macro")
         self.window.geometry("400x300")  # slightly taller for path selector
         self.window.resizable(False, False)
+
+        self.window.bind("<F5>", lambda event: self.toggleMacro())
+        self.window.iconbitmap("src/assets/Icon.ico")
 
         self.selectedField = tk.StringVar()
         self.selectedPattern = tk.StringVar()
@@ -78,7 +81,7 @@ class Interface():
 
         self.playStopButton = tk.Button(
             controlFrame,
-            text="Play",
+            text="Play (F5)",
             height=3,
             width=20,
             bg="#4CAF50",
@@ -164,11 +167,16 @@ class Interface():
         if self.macro.started:
             self.macro.end()
         else:
+            if not self.selectedField.get():
+                messagebox.showwarning("Warning", "Please select a field first.")
+                return
+            
             self.macro.restart()
+
         self.updatePlayStopButton()
 
     def updatePlayStopButton(self):
-        label = "Stop" if self.macro.started else "Play"
+        label = "Stop (F5)" if self.macro.started else "Play (F5)"
         color = "#F44336" if self.macro.started else "#4CAF50"
         self.playStopButton.config(text=label, bg=color)
 
