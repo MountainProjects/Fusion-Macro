@@ -15,6 +15,3 @@ time.sleep(2)
 
 var.macro = Macro()
 var.macro.start()
-
-var.macro.path.set("cedar_cannon")
-var.macro.restart()
