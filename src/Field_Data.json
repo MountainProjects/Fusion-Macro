@@ -11,8 +11,8 @@
       ],
       "paths": [
         {
-          "id": "cedar_cannon",
-          "name": "Cedar Cannon"
+          "type": "cannon",
+          "id": "cedar_cannon"
         }
       ]
     }

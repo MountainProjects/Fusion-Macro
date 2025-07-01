@@ -16,7 +16,6 @@ class Interface():
         self.window = None
         self.fieldDropdown = None
         self.patternDropdown = None
-        self.pathDropdown = None
         self.selectedField = None
         self.selectedPattern = None
         self.selectedPath = None
@@ -38,7 +37,7 @@ class Interface():
 
         self.window = tk.Tk()
         self.window.title("Fusion Macro")
-        self.window.geometry("500x300")
+        self.window.geometry("500x400")  # increased height for scrollable stock tab
         self.window.resizable(False, False)
 
         self.window.bind("<F5>", lambda event: self.toggleMacro())
@@ -85,20 +84,9 @@ class Interface():
         self.patternDropdown.grid(row=1, column=1, padx=5, pady=2)
         self.patternDropdown.bind("<<ComboboxSelected>>", self.onPatternSelected)
 
-        ttk.Label(fieldFrame, text="Select Path:").grid(row=2, column=0, sticky="w", padx=5, pady=2)
-        self.pathDropdown = ttk.Combobox(
-            fieldFrame,
-            textvariable=self.selectedPath,
-            values=["Select field first"],
-            state="disabled",
-            width=30
-        )
-        self.pathDropdown.grid(row=2, column=1, padx=5, pady=2)
-        self.pathDropdown.bind("<<ComboboxSelected>>", self.onPathSelected)
-
         # LabelFrame for Play controls in the Field tab
         playFrame = ttk.LabelFrame(fieldTab, text="Play")
-        playFrame.pack(fill="x", pady=5, padx=10)  # reduced vertical padding
+        playFrame.pack(fill="x", pady=5, padx=10)
 
         self.playStopButton = tk.Button(
             playFrame,
@@ -109,7 +97,7 @@ class Interface():
             fg="white",
             command=self.toggleMacro
         )
-        self.playStopButton.pack(ipady=5, pady=5)  # smaller vertical internal padding and pady
+        self.playStopButton.pack(ipady=5, pady=5)
 
         self.updatePlayStopButton()
 
@@ -208,121 +196,319 @@ class Interface():
 
         ttk.Label(settingsFrame, text="Max Farming Repeat (times)").grid(row=1, column=1, sticky="w", padx=5, pady=5)
 
-        self.window.protocol("WM_DELETE_WINDOW", self.on_close)
+        # Load saved parachute setting or fallback to default "None"
+        saved_parachute_record = self.settings_db.getByQuery({"key": "parachute"})
+        if saved_parachute_record:
+            saved_parachute = saved_parachute_record[0]["value"]
+        else:
+            saved_parachute = "None"
 
-        self.window.after(200, self.pollMacroState)
+        self.parachuteVar = tk.StringVar(value=saved_parachute)
+
+        def on_parachute_selected(event):
+            val = self.parachuteVar.get()
+            var.parachuteType = val  # Update var with current selection
+
+            existing = self.settings_db.getByQuery({"key": "parachute"})
+            if existing:
+                self.settings_db.updateById(existing[0]["id"], {"key": "parachute", "value": val})
+            else:
+                self.settings_db.add({"key": "parachute", "value": val})
+
+        parachuteDropdown = ttk.Combobox(
+            settingsFrame,
+            textvariable=self.parachuteVar,
+            values=["None", "Leaf", "Maple Leaf"],
+            state="readonly",
+            width=15
+        )
+        parachuteDropdown.grid(row=2, column=0, padx=5, pady=5)
+        parachuteDropdown.bind("<<ComboboxSelected>>", on_parachute_selected)
+
+        ttk.Label(settingsFrame, text="Parachute").grid(row=2, column=1, sticky="w", padx=5, pady=5)
+
+        # Load saved movement path setting or fallback to default "Cannon"
+        saved_movement_path_record = self.settings_db.getByQuery({"key": "movement_path"})
+        if saved_movement_path_record:
+            saved_movement_path = saved_movement_path_record[0]["value"]
+        else:
+            saved_movement_path = "Cannon"
+
+        self.movementPathVar = tk.StringVar(value=saved_movement_path)
+
+        def on_movement_path_selected(event):
+            val = self.movementPathVar.get()
+            existing = self.settings_db.getByQuery({"key": "movement_path"})
+            if existing:
+                self.settings_db.updateById(existing[0]["id"], {"key": "movement_path", "value": val})
+            else:
+                self.settings_db.add({"key": "movement_path", "value": val})
+
+            # Auto-select path based on selected field and movement path
+            selectedFieldName = self.selectedField.get()
+            if not selectedFieldName:
+                self.selectedPath.set("")
+                return
+
+            fieldDataList = self.macro.field.database.getByQuery({"name": selectedFieldName})
+            if not fieldDataList:
+                self.selectedPath.set("")
+                return
+
+            fieldData = fieldDataList[0]
+
+            # Map dropdown value to field-id values (you may want to normalize)
+            movementPathMap = {
+                "Cannon": "cannon",
+                "Walk": "walk",
+                # Add more if needed
+            }
+            desiredFieldId = movementPathMap.get(val.lower().capitalize(), val.lower())
+
+            # Find matching path
+            matchingPath = None
+            for path in fieldData.get("paths", []):
+                if path.get("type", "").lower() == desiredFieldId.lower():
+                    matchingPath = path
+                    break
+
+            if matchingPath:
+                self.selectedPath.set(matchingPath["id"])
+                # Optionally, update the macro's internal path variable, e.g.:
+                if hasattr(self.macro, "path"):
+                    self.macro.path.set(matchingPath["id"])
+            else:
+                self.selectedPath.set("")
+
+        movementPathDropdown = ttk.Combobox(
+            settingsFrame,
+            textvariable=self.movementPathVar,
+            values=["Cannon", "Walk"],
+            state="readonly",
+            width=15
+        )
+        movementPathDropdown.grid(row=3, column=0, padx=5, pady=5)
+        movementPathDropdown.bind("<<ComboboxSelected>>", on_movement_path_selected)
+
+        ttk.Label(settingsFrame, text="Movement Path").grid(row=3, column=1, sticky="w", padx=5, pady=5)
+
+        # --- Stock Tab ---
+        stockTab = ttk.Frame(notebook, padding=10)
+        notebook.add(stockTab, text="Stock")
+
+        stockFrame = ttk.LabelFrame(stockTab, text="Stock Items")
+        stockFrame.pack(fill="both", expand=True, pady=10, padx=10)
+
+        # Canvas + scrollbar for scrolling stock checkboxes
+        canvas = tk.Canvas(stockFrame)
+        canvas.pack(side="left", fill="both", expand=True)
+
+        scrollbar = ttk.Scrollbar(stockFrame, orient="vertical", command=canvas.yview)
+        scrollbar.pack(side="right", fill="y")
+
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        checkboxFrame = ttk.Frame(canvas)
+        canvas.create_window((0, 0), window=checkboxFrame, anchor="nw")
+
+        def on_frame_configure(event):
+            canvas.configure(scrollregion=canvas.bbox("all"))
+
+        checkboxFrame.bind("<Configure>", on_frame_configure)
+
+        # Load saved stock enabled and stock settings
+        saved_stock_enabled = self.settings_db.getByQuery({"key": "stock-enabled"})
+        if saved_stock_enabled:
+            stockEnabled = saved_stock_enabled[0]["value"]
+            var.stockEnabled = stockEnabled
+        else:
+            var.stockEnabled = False  # default off
+
+        saved_stocks_record = self.settings_db.getByQuery({"key": "Stocks"})
+        stockItems = [
+            "Strawberry",
+            "Blueberry",
+            "Sunflower Seed",
+            "Honeycomb",
+            "Honey Jar",
+            "Blueberry Jam",
+            "Strawberry Jam",
+            "Bottomless Bag"
+        ]
+
+        if saved_stocks_record:
+            savedStocks = saved_stocks_record[0]["value"]
+        else:
+            savedStocks = {item: False for item in stockItems}
+
+        var.stockSettings = savedStocks.copy()
+
+        self.stockEnabledVar = tk.BooleanVar(value=var.stockEnabled)
+        self.stockVars = {}
+        self.stockCheckboxes = []
+
+        def on_stock_enabled_toggle():
+            var.stockEnabled = self.stockEnabledVar.get()
+            existing = self.settings_db.getByQuery({"key": "stock-enabled"})
+            if existing:
+                self.settings_db.updateById(existing[0]["id"], {"key": "stock-enabled", "value": var.stockEnabled})
+            else:
+                self.settings_db.add({"key": "stock-enabled", "value": var.stockEnabled})
+
+            for chk in self.stockCheckboxes:
+                chk.config(state="normal" if var.stockEnabled else "disabled")
+
+        def on_stock_check():
+            for item, varBool in self.stockVars.items():
+                var.stockSettings[item] = varBool.get()
+            existing = self.settings_db.getByQuery({"key": "Stocks"})
+            if existing:
+                self.settings_db.updateById(existing[0]["id"], {"key": "Stocks", "value": var.stockSettings})
+            else:
+                self.settings_db.add({"key": "Stocks", "value": var.stockSettings})
+
+        # Enable Stock checkbox
+        stockEnabledCheckbox = ttk.Checkbutton(
+            checkboxFrame,
+            text="Enable Stock",
+            variable=self.stockEnabledVar,
+            command=on_stock_enabled_toggle
+        )
+        stockEnabledCheckbox.grid(row=0, column=0, sticky="w", pady=5)
+
+        # Stock item checkboxes
+        for i, item in enumerate(stockItems, start=1):
+            varBool = tk.BooleanVar(value=savedStocks.get(item, False))
+            chk = ttk.Checkbutton(
+                checkboxFrame,
+                text=item,
+                variable=varBool,
+                command=on_stock_check
+            )
+            chk.grid(row=i, column=0, sticky="w", pady=2)
+            self.stockVars[item] = varBool
+            self.stockCheckboxes.append(chk)
+
+        # Disable stock checkboxes if stockEnabled is False
+        if not var.stockEnabled:
+            for chk in self.stockCheckboxes:
+                chk.config(state="disabled")
+
+        # --- End of Tabs ---
+
+        # Load last saved selected field, pattern, and path
+        saved_field_record = self.settings_db.getByQuery({"key": "selected-field"})
+        if saved_field_record:
+            saved_field = saved_field_record[0]["value"]
+            self.selectedField.set(saved_field)
+
+        saved_pattern_record = self.settings_db.getByQuery({"key": "selected-pattern"})
+        if saved_pattern_record:
+            saved_pattern_id = saved_pattern_record[0]["value"]
+            self.selectedPattern.set(saved_pattern_id)
+        else:
+            self.selectedPattern.set("")
+
+        self.updatePatternDropdown()
+
         self.window.mainloop()
 
-    def on_close(self):
-        # Save current walkspeed before closing
-        val = self.walkspeedVar.get()
-        if val:
-            try:
-                val_int = int(val)
-                existing = self.settings_db.getByQuery({"key": "walkspeed"})
-                if existing:
-                    self.settings_db.updateById(existing[0]["id"], {"key": "walkspeed", "value": val_int})
-                else:
-                    self.settings_db.add({"key": "walkspeed", "value": val_int})
-            except Exception:
-                pass
-
-        # Save max farming time before closing
-        val = self.maxFarmingTimeVar.get()
-        if val:
-            try:
-                val_int = int(val)
-                existing = self.settings_db.getByQuery({"key": "max_farming_repeat"})
-                if existing:
-                    self.settings_db.updateById(existing[0]["id"], {"key": "max_farming_repeat", "value": val_int})
-                else:
-                    self.settings_db.add({"key": "max_farming_repeat", "value": val_int})
-            except Exception:
-                pass
-
-        self.window.destroy()
-
-    def onFieldSelected(self, event):
-        fieldName = self.selectedField.get()
-        fieldData = self.macro.field.get(fieldName)
-        if fieldData:
-            patterns = fieldData.get("patterns", [])
-            patternNames = [p["name"] for p in patterns]
-            if patternNames:
-                self.patternDropdown["values"] = patternNames
-                self.patternDropdown.config(state="readonly")
-                self.selectedPattern.set(patternNames[0])
-                self.macro.pattern.set(patterns[0]["id"])
-            else:
-                self.patternDropdown["values"] = []
-                self.patternDropdown.config(state="disabled")
-                self.selectedPattern.set("")
-                self.macro.pattern.set(None)
-
-            paths = fieldData.get("paths", [])
-            pathNames = [p["name"] for p in paths]
-            if pathNames:
-                self.pathDropdown["values"] = pathNames
-                self.pathDropdown.config(state="readonly")
-                self.selectedPath.set(pathNames[0])
-                self.macro.path.set(paths[0]["id"])
-            else:
-                self.pathDropdown["values"] = []
-                self.pathDropdown.config(state="disabled")
-                self.selectedPath.set("")
-                self.macro.path.set(None)
+    def updatePlayStopButton(self):
+        if self.macro.started:
+            self.playStopButton.config(text="Stop (F5)", bg="#E53935")
         else:
-            self.patternDropdown["values"] = ["Select field first"]
-            self.patternDropdown.config(state="disabled")
-            self.selectedPattern.set("")
-            self.macro.pattern.set(None)
-
-            self.pathDropdown["values"] = ["Select field first"]
-            self.pathDropdown.config(state="disabled")
-            self.selectedPath.set("")
-            self.macro.path.set(None)
-
-    def onPatternSelected(self, event):
-        fieldName = self.selectedField.get()
-        fieldData = self.macro.field.get(fieldName)
-        if not fieldData:
-            return
-
-        selectedPatternName = self.selectedPattern.get()
-        for pattern in fieldData.get("patterns", []):
-            if pattern["name"] == selectedPatternName:
-                self.macro.pattern.set(pattern["id"])
-                break
-
-    def onPathSelected(self, event):
-        fieldName = self.selectedField.get()
-        fieldData = self.macro.field.get(fieldName)
-        if not fieldData:
-            return
-
-        selectedPathName = self.selectedPath.get()
-        for path in fieldData.get("paths", []):
-            if path["name"] == selectedPathName:
-                self.macro.path.set(path["id"])
-                break
+            self.playStopButton.config(text="Play (F5)", bg="#4CAF50")
 
     def toggleMacro(self):
         if self.macro.started:
             self.macro.end()
         else:
-            if not self.selectedField.get():
-                messagebox.showwarning("Warning", "Please select a field first.")
+            if not self.selectedField.get() or not self.selectedPattern.get():
+                messagebox.showerror("Error", "Please select Field, Pattern before starting.")
                 return
-            
             self.macro.restart()
-
         self.updatePlayStopButton()
 
-    def updatePlayStopButton(self):
-        label = "Stop (F5)" if self.macro.started else "Play (F5)"
-        color = "#F44336" if self.macro.started else "#4CAF50"
-        self.playStopButton.config(text=label, bg=color)
+    def onFieldSelected(self, event):
+        selected = self.selectedField.get()
+        # Save selection to db
+        existing = self.settings_db.getByQuery({"key": "selected-field"})
+        if existing:
+            self.settings_db.updateById(existing[0]["id"], {"key": "selected-field", "value": selected})
+        else:
+            self.settings_db.add({"key": "selected-field", "value": selected})
 
-    def pollMacroState(self):
-        self.updatePlayStopButton()
-        self.window.after(200, self.pollMacroState)
+        # Update patterns and paths based on selected field
+        self.updatePatternDropdown()
+
+    def updatePatternDropdown(self):
+        fieldName = self.selectedField.get()
+        if not fieldName:
+            self.patternDropdown.config(state="disabled")
+            self.patternDropdown["values"] = []
+            self.selectedPattern.set("")
+            self.selectedPath.set("")
+            return
+
+        fieldDataList = self.macro.field.database.getByQuery({"name": fieldName})
+        if not fieldDataList:
+            self.patternDropdown.config(state="disabled")
+            self.patternDropdown["values"] = []
+            self.selectedPattern.set("")
+            self.selectedPath.set("")
+            return
+
+        fieldData = fieldDataList[0]
+
+        # Extract pattern names and build id->name map
+        patterns = fieldData.get("patterns", [])
+        patternNames = [p["name"] for p in patterns]
+        patternIdToName = {p["id"]: p["name"] for p in patterns}
+
+        self.patternDropdown.config(state="readonly")
+        self.patternDropdown["values"] = patternNames
+
+        savedPatternId = self.selectedPattern.get()
+
+        # If savedPatternId is in our map, select corresponding name in dropdown
+        if savedPatternId in patternIdToName:
+            patternName = patternIdToName[savedPatternId]
+            self.patternDropdown.set(patternName)
+        else:
+            self.patternDropdown.set("")
+            self.selectedPattern.set("")
+
+    def onPatternSelected(self, event):
+        fieldName = self.selectedField.get()
+        selectedPatternName = self.patternDropdown.get()  # get pattern name from dropdown
+
+        if not fieldName or not selectedPatternName:
+            self.selectedPattern.set("")
+            return
+
+        # Find pattern id by name in the selected field
+        fieldDataList = self.macro.field.database.getByQuery({"name": fieldName})
+        if not fieldDataList:
+            self.selectedPattern.set("")
+            return
+        fieldData = fieldDataList[0]
+
+        patternId = None
+        for pattern in fieldData.get("patterns", []):
+            if pattern["name"] == selectedPatternName:
+                patternId = pattern["id"]
+                break
+
+        if patternId is None:
+            self.selectedPattern.set("")
+            return
+
+        self.selectedPattern.set(patternId)  # Store ID here
+        self.macro.pattern.set(patternId)   # Update macro with ID
+
+        # Save pattern ID to db
+        existing = self.settings_db.getByQuery({"key": "selected-pattern"})
+        if existing:
+            self.settings_db.updateById(existing[0]["id"], {"key": "selected-pattern", "value": patternId})
+        else:
+            self.settings_db.add({"key": "selected-pattern", "value": patternId})
