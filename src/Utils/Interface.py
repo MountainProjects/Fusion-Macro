@@ -414,6 +414,7 @@ class Interface():
         self.updatePatternDropdown()
 
         if self.selectedPattern.get():
+            print(self.selectedPattern.get())
             self.macro.pattern.set(self.selectedPattern.get())
 
         if self.selectedPath.get():
@@ -513,6 +514,8 @@ class Interface():
 
         self.selectedPattern.set(patternId)  # Store ID here
         self.macro.pattern.set(patternId)   # Update macro with ID
+
+        print(patternId)
 
         # Save pattern ID to db
         existing = self.settings_db.getByQuery({"key": "selected-pattern"})
