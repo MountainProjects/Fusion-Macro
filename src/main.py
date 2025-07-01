@@ -11,5 +11,6 @@ project_root = os.path.dirname(current_path)
 
 sys.path.append(project_root)
 
-var.macro = Macro()
-var.macro.start()
+if __name__ == "__main__":
+    var.macro = Macro()
+    var.macro.start()
