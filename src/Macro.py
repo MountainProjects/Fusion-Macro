@@ -29,7 +29,7 @@ class Macro():
             self.movement.align_spawn()
             self.task.set()
 
-    def IsRobloxFocused() -> bool:
+    def IsRobloxFocused(self) -> bool:
         hwnd = win32gui.GetForegroundWindow()
         class_name = win32gui.GetClassName(hwnd)
         return class_name == "Roblox"
