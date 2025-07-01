@@ -14,8 +14,11 @@ class TaskHandler():
         
         result = current_path.start()
         if not result:
+            print("Farm path failed, restarting...")
             var.macro.restart()
             return
+        
+        print("Starting farm...")
         var.macro.movement.hold_mouse()
         var.macro.pattern.set("cedar_default")
         var.macro.pattern.run_current()

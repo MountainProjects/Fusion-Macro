@@ -4,4 +4,4 @@ class Convert():
         self.started = False
     
     def start(self):
-        print("я конвертю")
+        pass
