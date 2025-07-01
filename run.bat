@@ -1,11 +1,9 @@
-<<<<<<< HEAD
-=======
 ::[Bat To Exe Converter]
 ::
-::YAwzoRdxOk+EWAjk
-::fBw5plQjdCuDJH+R50s/Jlt5TQeQM1ecE6YV5+a2wuuEsEJQBd4saozn26edJfQA1mznephj33lV+A==
+::YAwzoRdxOk+EWAnk
+::fBw5plQjdG8=
 ::YAwzuBVtJxjWCl3EqQJgSA==
-::ZR4luwNxJguZRRnVphFkfU00
+::ZR4luwNxJguZRRnk
 ::Yhs/ulQjdF+5
 ::cxAkpRVqdFKZSDk=
 ::cBs/ulQjdF+5
@@ -33,5 +31,4 @@
 ::
 ::
 ::978f952a14a936cc963da21a135fa983
->>>>>>> b044198a303ad23beed7908ad1217d361d5bc78f
 python src/main.py
