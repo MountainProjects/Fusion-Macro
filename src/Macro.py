@@ -25,7 +25,6 @@ class Macro():
             if not self.IsRobloxFocused():
                 return
 
-            self.movement.correct()
             self.movement.align_spawn()
             self.task.set()
 
