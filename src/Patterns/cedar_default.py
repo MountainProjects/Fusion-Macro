@@ -2,8 +2,8 @@ from time import *
 import var
 
 #SETTINGS:
-w_duration = 0.46
-side_duration = 0.12
+w_duration = 2.16
+side_duration = 0.5616
 
 repeats = 3
 
@@ -27,6 +27,6 @@ class PatternHandler:
     def realign(self):
         walk = var.macro.movement.move
         
-        walk("s", 2)
+        walk("s", 4.32)
         sleep(0.5)
-        walk("w", 0.925)
+        walk("w", 1.998)
