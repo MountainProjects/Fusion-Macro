@@ -40,6 +40,7 @@ class Movement():
                 break
 
             self.reset_character()
+            self.correct()
 
             sleep(4.5)
 

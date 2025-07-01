@@ -21,7 +21,6 @@ class Macro():
 
         @self.loop()
         def main_loop():
-            self.movement.correct()
             self.movement.align_spawn()
             self.task.set()
 
