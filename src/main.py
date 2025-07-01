@@ -11,11 +11,8 @@ project_root = os.path.dirname(current_path)
 
 sys.path.append(project_root)
 
-time.sleep(3)
-
 var.macro = Macro()
 var.macro.start()
 
-var.macro.path.set("cedar_cannon")
-print(var.macro.path.current)
-var.macro.restart()
+#var.macro.path.set("cedar_cannon")
+#var.macro.restart()

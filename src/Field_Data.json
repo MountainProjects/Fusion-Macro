@@ -1,0 +1,20 @@
+{
+  "data": [
+    {
+      "name": "Cedar",
+
+      "patterns": [
+        {
+          "id": "cedar_default",
+          "name": "Cedar Default"
+        }
+      ],
+      "paths": [
+        {
+          "id": "cedar_cannon",
+          "name": "Cedar Cannon"
+        }
+      ]
+    }
+  ]
+}

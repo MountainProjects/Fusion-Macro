@@ -23,7 +23,6 @@ class Movement():
         mouse = MouseController()
 
         mouse.scroll(0, 5)
-        #TODO ДЕТЕКТ ШИФТ ЛОКА И ШИФТ ЛОК
 
     def align_spawn(self):
         """
@@ -35,13 +34,21 @@ class Movement():
         if correct:
             return
 
-        while not correct:
+        while not correct and var.macro.started:
             aligned = self.Macro.screen.isCorrectStartPos()
             if aligned:
                 break
 
             self.reset_character()
-            sleep(4.5)
+
+            totalSleep = 4.5
+            interval = 0.1
+            elapsed = 0
+            while elapsed < totalSleep:
+                if not var.macro.started:
+                    break
+                sleep(interval)
+                elapsed += interval
 
     def stop_movement(self):
         keyboard.release("w")
