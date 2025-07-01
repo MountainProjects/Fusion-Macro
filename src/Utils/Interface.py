@@ -128,13 +128,13 @@ class Interface():
         else:
             saved_speed = var.movespeed
 
-        saved_time_record = self.settings_db.getByQuery({"key": "max_farming_time"})
+        saved_time_record = self.settings_db.getByQuery({"key": "max_farming_repeat"})
         if saved_time_record:
             saved_max_time = saved_time_record[0]["value"]
-            var.max_farming_time = saved_max_time
+            var.max_farming_repeat = saved_max_time
         else:
-            saved_max_time = getattr(var, "max_farming_time", 60)
-            var.max_farming_time = saved_max_time
+            saved_max_time = getattr(var, "max_farming_repeat", var.max_farming_repeat)
+            var.max_farming_repeat = saved_max_time
 
         self.walkspeedVar = tk.StringVar(value=str(saved_speed))
         self.maxFarmingTimeVar = tk.StringVar(value=str(saved_max_time))
@@ -166,17 +166,17 @@ class Interface():
         def on_max_time_focus_out(event):
             val = self.maxFarmingTimeVar.get()
             if val == "":
-                self.maxFarmingTimeVar.set(str(var.max_farming_time))
+                self.maxFarmingTimeVar.set(str(var.max_farming_repeat))
             else:
                 val_int = int(val)
                 self.maxFarmingTimeVar.set(str(val_int))
-                var.max_farming_time = val_int
+                var.max_farming_repeat = val_int
 
-                existing = self.settings_db.getByQuery({"key": "max_farming_time"})
+                existing = self.settings_db.getByQuery({"key": "max_farming_repeat"})
                 if existing:
-                    self.settings_db.updateById(existing[0]["id"], {"key": "max_farming_time", "value": val_int})
+                    self.settings_db.updateById(existing[0]["id"], {"key": "max_farming_repeat", "value": val_int})
                 else:
-                    self.settings_db.add({"key": "max_farming_time", "value": val_int})
+                    self.settings_db.add({"key": "max_farming_repeat", "value": val_int})
 
         vcmd = (self.window.register(validate_positive_int), '%P')
 
@@ -206,7 +206,7 @@ class Interface():
         maxTimeEntry.grid(row=1, column=0, padx=5)
         maxTimeEntry.bind("<FocusOut>", on_max_time_focus_out)
 
-        ttk.Label(settingsFrame, text="Max Farming Time (min)").grid(row=1, column=1, sticky="w", padx=5, pady=5)
+        ttk.Label(settingsFrame, text="Max Farming Repeat (times)").grid(row=1, column=1, sticky="w", padx=5, pady=5)
 
         self.window.protocol("WM_DELETE_WINDOW", self.on_close)
 
@@ -232,11 +232,11 @@ class Interface():
         if val:
             try:
                 val_int = int(val)
-                existing = self.settings_db.getByQuery({"key": "max_farming_time"})
+                existing = self.settings_db.getByQuery({"key": "max_farming_repeat"})
                 if existing:
-                    self.settings_db.updateById(existing[0]["id"], {"key": "max_farming_time", "value": val_int})
+                    self.settings_db.updateById(existing[0]["id"], {"key": "max_farming_repeat", "value": val_int})
                 else:
-                    self.settings_db.add({"key": "max_farming_time", "value": val_int})
+                    self.settings_db.add({"key": "max_farming_repeat", "value": val_int})
             except Exception:
                 pass
 
