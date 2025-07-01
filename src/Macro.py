@@ -29,9 +29,20 @@ class Macro():
             self.task.set()
 
     def IsRobloxFocused(self) -> bool:
-        hwnd = win32gui.GetForegroundWindow()
-        class_name = win32gui.GetClassName(hwnd)
-        return class_name == "Roblox"
+        try:
+            hwnd = win32gui.GetForegroundWindow()
+            if not hwnd:
+                return False  # No active window
+
+            # OPTIONAL: Check if window is visible & enabled
+            if not win32gui.IsWindowVisible(hwnd) or not win32gui.IsWindowEnabled(hwnd):
+                return False
+
+            class_name = win32gui.GetClassName(hwnd)
+            return class_name == "Roblox"
+        except Exception as e:
+            print(f"[Window Check Failed] {e}")
+            return False
 
     def start(self):
         self.field.start()
