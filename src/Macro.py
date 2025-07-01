@@ -1,4 +1,4 @@
-from Utils import Convert, Screen, Path, Movement, Task, Interface, Loop, Pattern, Field
+from Utils import Screen, Path, Movement, Task, Interface, Loop, Pattern, Field
 
 class Macro():
     def __init__(self):
