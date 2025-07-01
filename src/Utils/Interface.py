@@ -414,7 +414,9 @@ class Interface():
         self.updatePatternDropdown()
 
         if self.selectedPattern.get():
+            fieldName = self.selectedField.get()
             fieldDataList = self.macro.field.database.getByQuery({"name": fieldName})
+            
             if fieldDataList:
                 fieldData = fieldDataList[0]
                 patternName = self.selectedPattern.get()
