@@ -1,4 +1,5 @@
 import os
+import var
 
 class Path():
     def __init__(self, macro):
@@ -36,6 +37,49 @@ class Path():
             return
         
         self.current.end()
+
+    def get_from_type(self, type=None):
+        """
+        Возвращает путь по типу хождения.
+        """
+
+        if not type:
+            type = var.movementPath
+
+        current_field = self.macro.interface.selectedField.get()
+        if not current_field:
+            raise ValueError("No field selected")
+        
+        field = self.macro.field.database.getByQuery({"name": current_field})
+        if not field:
+            raise ValueError(f"No field found for type '{type}'")
+        
+        field = field[0]
+        for path in field.paths:
+            if path["type"] == type:
+                return self.macro.paths[path["id"]]
+            
+    def set_from_type(self, type=None):
+        """
+        Устанавливает путь по типу хождения.
+        """
+
+        if not type:
+            type = var.movementPath
+
+        current_field = self.macro.interface.selectedField.get()
+        if not current_field:
+            raise ValueError("No field selected")
+        
+        field = self.macro.field.database.getByQuery({"name": current_field})
+        if not field:
+            raise ValueError(f"No field found for type '{type}'")
+        
+        field = field[0]
+        for path in field.paths:
+            if path["type"] == type:
+                self.set(path["id"])
+                return
 
     def set(self, name=None):
         if not name:

@@ -428,8 +428,8 @@ class Interface():
 
                 self.macro.pattern.set(patternId)
 
-        if self.selectedPath.get():
-            self.macro.path.set(self.selectedPath.get())
+        #if self.selectedPath.get():
+        #    self.macro.path.set(self.selectedPath.get())
 
         self.window.mainloop()
 

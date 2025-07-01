@@ -15,8 +15,8 @@ class Pattern():
                 raise ValueError(f"Pattern with name '{Pattern.name}' already exists")
             
             Pattern.macro = self.macro
-            Pattern.__repr__ = lambda self: f"<Macro Path '{Pattern.name}'>"
-            Pattern.__str__ = lambda self: f"<Macro Path '{Pattern.name}'>"
+            Pattern.__repr__ = lambda self: f"<Macro Pattern '{Pattern.name}'>"
+            Pattern.__str__ = lambda self: f"<Macro Pattern '{Pattern.name}'>"
             Pattern.__bool__ = lambda _: self.current is not None and self.current.name == Pattern.name
 
             self.macro.patterns[Pattern.name] = Pattern()
