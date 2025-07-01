@@ -239,6 +239,8 @@ class Interface():
         def on_movement_path_selected(event):
             val = self.movementPathVar.get()
             existing = self.settings_db.getByQuery({"key": "movement_path"})
+
+            var.movementPath = val # Update var with current selection
             if existing:
                 self.settings_db.updateById(existing[0]["id"], {"key": "movement_path", "value": val})
             else:
@@ -290,7 +292,7 @@ class Interface():
         movementPathDropdown.grid(row=3, column=0, padx=5, pady=5)
         movementPathDropdown.bind("<<ComboboxSelected>>", on_movement_path_selected)
 
-        ttk.Label(settingsFrame, text="Movement Path").grid(row=3, column=1, sticky="w", padx=5, pady=5)
+        ttk.Label(settingsFrame, text="Movement Type").grid(row=3, column=1, sticky="w", padx=5, pady=5)
 
         # --- Stock Tab ---
         stockTab = ttk.Frame(notebook, padding=10)
