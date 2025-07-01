@@ -3,6 +3,9 @@ from tkinter import ttk
 import tkinter.font as tkFont
 import tkinter.messagebox as messagebox
 
+import threading
+from pynput.keyboard import Key, Listener
+
 class Interface():
     def __init__(self, macro):
         self.macro = macro
@@ -15,7 +18,17 @@ class Interface():
         self.selectedPath = None
         self.playStopButton = None
 
+    def on_key_press(self, key):
+        if key == Key.f5:
+            self.toggleMacro()
+
+    def to_async(self):
+        with Listener(on_press = lambda key: self.on_key_press(key)) as listener:
+            listener.join()
+
     def start(self):
+        threading.Thread(target=self.to_async).start()
+
         self.window = tk.Tk()
         self.window.title("Fusion Macro")
         self.window.geometry("400x300")  # slightly taller for path selector

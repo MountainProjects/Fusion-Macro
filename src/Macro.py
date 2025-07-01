@@ -1,5 +1,6 @@
 from Utils import Screen, Path, Movement, Task, Interface, Loop, Pattern, Field
 import win32gui
+from pynput.keyboard import Listener
 
 class Macro():
     def __init__(self):

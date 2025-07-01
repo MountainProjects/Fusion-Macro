@@ -6,8 +6,8 @@ import py_win_keyboard_layout
 import ctypes
 import var
 
-keyboard = KeyboardController()
-mouse = MouseController()
+var.keyboard = KeyboardController()
+var.mouse = MouseController()
 
 import pynput
 
@@ -19,10 +19,10 @@ class Movement():
         klid = ctypes.windll.user32.LoadKeyboardLayoutW("00000409", 1)
 
         ctypes.windll.user32.ActivateKeyboardLayout(klid, 0)
-        keyboard = KeyboardController()
-        mouse = MouseController()
+        var.keyboard = KeyboardController()
+        var.mouse = MouseController()
 
-        mouse.scroll(0, 5)
+        var.mouse.scroll(0, 5)
 
     def align_spawn(self):
         """
@@ -45,59 +45,59 @@ class Movement():
             sleep(4.5)
 
     def stop_movement(self):
-        keyboard.release("w")
-        keyboard.release("a")
-        keyboard.release("s")
-        keyboard.release("d")
+        var.keyboard.release("w")
+        var.keyboard.release("a")
+        var.keyboard.release("s")
+        var.keyboard.release("d")
 
     def reset_character(self):
         print("Reset character")
-        keyboard.tap(Key.esc)
+        var.keyboard.tap(Key.esc)
         sleep(0.2)
-        keyboard.tap("r")
-        keyboard.tap("к")
+        var.keyboard.tap("r")
+        var.keyboard.tap("к")
         sleep(0.2)
-        keyboard.tap(Key.enter)
+        var.keyboard.tap(Key.enter)
 
         #Расклик клавиатуры,
-        keyboard.tap("w")
-        keyboard.tap("a")
-        keyboard.tap("s")
-        keyboard.tap("d")
-        keyboard.tap(Key.space)
+        var.keyboard.tap("w")
+        var.keyboard.tap("a")
+        var.keyboard.tap("s")
+        var.keyboard.tap("d")
+        var.keyboard.tap(Key.space)
 
     def tap_key(self, key:Key):
-        keyboard.tap(key)
+        var.keyboard.tap(key)
 
     def jump(self):
-        keyboard.press(Key.space)
+        var.keyboard.press(Key.space)
         sleep(0.05)
-        keyboard.release(Key.space)
+        var.keyboard.release(Key.space)
 
     def shiftlock(self):
-        keyboard.press(Key.shift_l)
+        var.keyboard.press(Key.shift_l)
         sleep(0.05)
-        keyboard.release(Key.shift_l)
+        var.keyboard.release(Key.shift_l)
 
     def move(self, key, duration):
         mult = 100 / var.movespeed
-        keyboard.press(key)
+        var.keyboard.press(key)
         sleep(duration * mult)
-        keyboard.release(key)
+        var.keyboard.release(key)
 
     def hold_mouse(self):
-        mouse.press(Button.left)
+        var.mouse.press(Button.left)
 
     def release_mouse(self):
-        mouse.release(Button.left)
+        var.mouse.release(Button.left)
 
     def camera_rotate(self, degree):
         hold_time = abs(degree) / 117.65
         if degree < 0:
-            keyboard.press(Key.left)
+            var.keyboard.press(Key.left)
             sleep(hold_time)
-            keyboard.release(Key.left)
+            var.keyboard.release(Key.left)
         else:
-            keyboard.press(Key.right)
+            var.keyboard.press(Key.right)
             sleep(hold_time)
-            keyboard.release(Key.right)
+            var.keyboard.release(Key.right)
