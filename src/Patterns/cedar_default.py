@@ -27,6 +27,6 @@ class PatternHandler:
     def realign(self):
         walk = var.macro.movement.move
         
-        walk("s", 4.32)
+        walk("s", 9.3)
         sleep(0.5)
-        walk("w", 1.998)
+        walk("w", 204)
