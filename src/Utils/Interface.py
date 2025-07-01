@@ -34,11 +34,11 @@ class Interface():
             listener.join()
 
     def start(self):
-        threading.Thread(target=self.to_async).start()
+        threading.Thread(target=self.to_async, daemon=True).start()
 
         self.window = tk.Tk()
         self.window.title("Fusion Macro")
-        self.window.geometry("800x500")
+        self.window.geometry("500x300")
         self.window.resizable(False, False)
 
         self.window.bind("<F5>", lambda event: self.toggleMacro())
@@ -50,24 +50,19 @@ class Interface():
 
         buttonFont = tkFont.Font(size=14, weight="bold")
 
-        mainFrame = tk.Frame(self.window, padx=10, pady=20)  # Reduced padx from 20 to 10 for tighter left
-        mainFrame.pack(expand=True, fill="both")
+        notebook = ttk.Notebook(self.window)
+        notebook.pack(expand=True, fill="both")
 
-        # Left and right frames
-        leftFrame = tk.Frame(mainFrame, width=300)  # fixed width for left panel
-        leftFrame.pack(side="left", fill="y")
-        leftFrame.pack_propagate(False)  # prevent resizing
+        # --- Field Tab ---
+        fieldTab = ttk.Frame(notebook, padding=10)
+        notebook.add(fieldTab, text="Field")
 
-        rightFrame = tk.Frame(mainFrame)
-        rightFrame.pack(side="right", fill="y")
+        # LabelFrame for Field selection
+        fieldFrame = ttk.LabelFrame(fieldTab, text="Field")
+        fieldFrame.pack(fill="x", pady=10, padx=10)
 
-        # Field selection frame on left
-        fieldFrame = ttk.LabelFrame(leftFrame, text="Field Selection", padding=(10, 10))
-        fieldFrame.pack(fill="y", expand=True)
-
-        ttk.Label(fieldFrame, text="Select Field:").pack(anchor="w")
+        ttk.Label(fieldFrame, text="Select Field:").grid(row=0, column=0, sticky="w", padx=5, pady=(5, 2))
         fieldNames = [f["name"] for f in self.macro.field.database.getAll()]
-        print(self.macro.field.database.getAll())
 
         self.fieldDropdown = ttk.Combobox(
             fieldFrame,
@@ -76,10 +71,10 @@ class Interface():
             state="readonly",
             width=30
         )
-        self.fieldDropdown.pack(pady=5)
+        self.fieldDropdown.grid(row=0, column=1, padx=5, pady=(5, 2))
         self.fieldDropdown.bind("<<ComboboxSelected>>", self.onFieldSelected)
 
-        ttk.Label(fieldFrame, text="Select Pattern:").pack(anchor="w", pady=(10, 0))
+        ttk.Label(fieldFrame, text="Select Pattern:").grid(row=1, column=0, sticky="w", padx=5, pady=2)
         self.patternDropdown = ttk.Combobox(
             fieldFrame,
             textvariable=self.selectedPattern,
@@ -87,10 +82,10 @@ class Interface():
             state="disabled",
             width=30
         )
-        self.patternDropdown.pack(pady=5)
+        self.patternDropdown.grid(row=1, column=1, padx=5, pady=2)
         self.patternDropdown.bind("<<ComboboxSelected>>", self.onPatternSelected)
 
-        ttk.Label(fieldFrame, text="Select Path:").pack(anchor="w", pady=(10, 0))
+        ttk.Label(fieldFrame, text="Select Path:").grid(row=2, column=0, sticky="w", padx=5, pady=2)
         self.pathDropdown = ttk.Combobox(
             fieldFrame,
             textvariable=self.selectedPath,
@@ -98,14 +93,15 @@ class Interface():
             state="disabled",
             width=30
         )
-        self.pathDropdown.pack(pady=5)
+        self.pathDropdown.grid(row=2, column=1, padx=5, pady=2)
         self.pathDropdown.bind("<<ComboboxSelected>>", self.onPathSelected)
 
-        controlFrame = tk.Frame(leftFrame)
-        controlFrame.pack(pady=5)
+        # LabelFrame for Play controls in the Field tab
+        playFrame = ttk.LabelFrame(fieldTab, text="Play")
+        playFrame.pack(fill="x", pady=5, padx=10)  # reduced vertical padding
 
         self.playStopButton = tk.Button(
-            controlFrame,
+            playFrame,
             text="Play (F5)",
             height=1,
             width=15,
@@ -113,9 +109,16 @@ class Interface():
             fg="white",
             command=self.toggleMacro
         )
-        self.playStopButton.pack(ipady=10)
+        self.playStopButton.pack(ipady=5, pady=5)  # smaller vertical internal padding and pady
 
         self.updatePlayStopButton()
+
+        # --- Settings Tab ---
+        settingsTab = ttk.Frame(notebook, padding=10)
+        notebook.add(settingsTab, text="Settings")
+
+        settingsFrame = ttk.LabelFrame(settingsTab, text="Settings")
+        settingsFrame.pack(fill="x", pady=10, padx=10)
 
         # Load saved walkspeed and max farming time from db or fallback to var values
         saved_speed_record = self.settings_db.getByQuery({"key": "walkspeed"})
@@ -133,16 +136,8 @@ class Interface():
             saved_max_time = getattr(var, "max_farming_time", 60)
             var.max_farming_time = saved_max_time
 
-        # Settings frame on right (formerly walkspeed frame)
-        settingsFrame = ttk.LabelFrame(rightFrame, text="Settings", padding=(10, 10))
-        settingsFrame.pack(fill="both", expand=True)
-
-        settingsControlFrame = tk.Frame(settingsFrame)
-        settingsControlFrame.pack()
-
-        # Walkspeed input
-        ttk.Label(settingsControlFrame, text="Walkspeed:").grid(row=0, column=0, sticky="e", padx=5, pady=5)
         self.walkspeedVar = tk.StringVar(value=str(saved_speed))
+        self.maxFarmingTimeVar = tk.StringVar(value=str(saved_max_time))
 
         def validate_positive_int(new_value):
             if new_value == "":
@@ -168,24 +163,6 @@ class Interface():
                 else:
                     self.settings_db.add({"key": "walkspeed", "value": val_int})
 
-        vcmd = (self.window.register(validate_positive_int), '%P')
-
-        walkspeedEntry = tk.Entry(
-            settingsControlFrame,
-            textvariable=self.walkspeedVar,
-            width=5,
-            justify="center",
-            font=tkFont.Font(size=12, weight="bold"),
-            validate='key',
-            validatecommand=vcmd
-        )
-        walkspeedEntry.grid(row=0, column=1, padx=5)
-        walkspeedEntry.bind("<FocusOut>", on_walkspeed_focus_out)
-
-        # Maximum Farming Time input
-        ttk.Label(settingsControlFrame, text="Max Farming Time (min):").grid(row=1, column=0, sticky="e", padx=5, pady=5)
-        self.maxFarmingTimeVar = tk.StringVar(value=str(saved_max_time))
-
         def on_max_time_focus_out(event):
             val = self.maxFarmingTimeVar.get()
             if val == "":
@@ -201,8 +178,24 @@ class Interface():
                 else:
                     self.settings_db.add({"key": "max_farming_time", "value": val_int})
 
+        vcmd = (self.window.register(validate_positive_int), '%P')
+
+        walkspeedEntry = tk.Entry(
+            settingsFrame,
+            textvariable=self.walkspeedVar,
+            width=5,
+            justify="center",
+            font=tkFont.Font(size=12, weight="bold"),
+            validate='key',
+            validatecommand=vcmd
+        )
+        walkspeedEntry.grid(row=0, column=0, padx=5)
+        walkspeedEntry.bind("<FocusOut>", on_walkspeed_focus_out)
+
+        ttk.Label(settingsFrame, text="Walkspeed").grid(row=0, column=1, sticky="w", padx=5, pady=5)
+
         maxTimeEntry = tk.Entry(
-            settingsControlFrame,
+            settingsFrame,
             textvariable=self.maxFarmingTimeVar,
             width=5,
             justify="center",
@@ -210,10 +203,11 @@ class Interface():
             validate='key',
             validatecommand=vcmd
         )
-        maxTimeEntry.grid(row=1, column=1, padx=5)
+        maxTimeEntry.grid(row=1, column=0, padx=5)
         maxTimeEntry.bind("<FocusOut>", on_max_time_focus_out)
 
-        # Save settings on close
+        ttk.Label(settingsFrame, text="Max Farming Time (min)").grid(row=1, column=1, sticky="w", padx=5, pady=5)
+
         self.window.protocol("WM_DELETE_WINDOW", self.on_close)
 
         self.window.after(200, self.pollMacroState)
