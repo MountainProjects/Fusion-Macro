@@ -80,7 +80,7 @@ class Movement():
         var.keyboard.release(Key.shift_l)
 
     def move(self, key, duration):
-        mult = 100 / var.movespeed
+        mult = 32 / var.movespeed
         var.keyboard.press(key)
         sleep(duration * mult)
         var.keyboard.release(key)
