@@ -29,4 +29,4 @@ class PatternHandler:
         
         walk("s", 9.3)
         sleep(0.5)
-        walk("w", 204)
+        walk("w", 2.04)
