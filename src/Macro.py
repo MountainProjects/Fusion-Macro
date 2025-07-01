@@ -1,4 +1,5 @@
 from Utils import Screen, Path, Movement, Task, Interface, Loop, Pattern, Field
+import win32gui
 
 class Macro():
     def __init__(self):
@@ -21,8 +22,16 @@ class Macro():
 
         @self.loop()
         def main_loop():
+            if not self.IsRobloxFocused():
+                return
+
             self.movement.align_spawn()
             self.task.set()
+
+    def IsRobloxFocused(self) -> bool:
+        hwnd = win32gui.GetForegroundWindow()
+        class_name = win32gui.GetClassName(hwnd)
+        return class_name == "Roblox"
 
     def start(self):
         self.field.start()
