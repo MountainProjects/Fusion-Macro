@@ -277,8 +277,8 @@ class Interface():
             if matchingPath:
                 self.selectedPath.set(matchingPath["id"])
                 # Optionally, update the macro's internal path variable, e.g.:
-                if hasattr(self.macro, "path"):
-                    self.macro.path.set(matchingPath["id"])
+                
+                self.macro.path.set(matchingPath["id"])
             else:
                 self.selectedPath.set("")
 

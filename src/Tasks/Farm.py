@@ -20,5 +20,5 @@ class TaskHandler():
         
         print("Starting farm...")
         var.macro.movement.hold_mouse()
-        var.macro.pattern.set("cedar_default")
+        #var.macro.pattern.set(var.macro.pattern.current)
         var.macro.pattern.run_current()
