@@ -34,21 +34,14 @@ class Movement():
         if correct:
             return
 
-        while not correct and var.macro.started:
+        while not correct:
             aligned = self.Macro.screen.isCorrectStartPos()
             if aligned:
                 break
 
             self.reset_character()
 
-            totalSleep = 4.5
-            interval = 0.1
-            elapsed = 0
-            while elapsed < totalSleep:
-                if not var.macro.started:
-                    break
-                sleep(interval)
-                elapsed += interval
+            sleep(4.5)
 
     def stop_movement(self):
         keyboard.release("w")
