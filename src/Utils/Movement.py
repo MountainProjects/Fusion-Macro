@@ -57,12 +57,20 @@ class Movement():
         keyboard.release("d")
 
     def reset_character(self):
+        print("Reset character")
         keyboard.tap(Key.esc)
         sleep(0.2)
         keyboard.tap("r")
         keyboard.tap("к")
         sleep(0.2)
         keyboard.tap(Key.enter)
+
+        #Расклик клавиатуры,
+        keyboard.tap("w")
+        keyboard.tap("a")
+        keyboard.tap("s")
+        keyboard.tap("d")
+        keyboard.tap(Key.space)
 
     def tap_key(self, key:Key):
         keyboard.tap(key)
@@ -78,7 +86,6 @@ class Movement():
         keyboard.release(Key.shift_l)
 
     def move(self, key, duration):
-        print("Иду нахрен")
         mult = var.movespeed / 100
         keyboard.press(key)
         sleep(duration * mult)

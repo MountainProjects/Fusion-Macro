@@ -11,7 +11,6 @@ class Screen():
     def is_backpack_full(self):
         x, y = (1808, 47)
         color = self.get_screen_color((x, y))
-        print(color)
         return color == (140, 39, 39)
 
     def is_backpack_empty(self):
@@ -26,9 +25,7 @@ class Screen():
 
         match_value = max(location_day, location_night)
 
-        print(f"Match value: {match_value}")
-
-        if 0.2 < match_value < 0.5:
+        if match_value < 0.5 and match_value > 0.2:
             var.macro.movement.shiftlock()
             return True
         elif match_value <= 0.2:
@@ -81,8 +78,6 @@ class Screen():
         match_count = np.sum(matches)
 
         match_percent = (match_count / total_pixels)
-
-        print(f"{match_percent}%")
 
         return match_percent
 

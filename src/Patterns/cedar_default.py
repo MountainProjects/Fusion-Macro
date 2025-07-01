@@ -1,6 +1,12 @@
 from time import *
 import var
 
+#SETTINGS:
+w_duration = 0.46
+side_duration = 0.12
+
+repeats = 3
+
 @var.macro.pattern()
 class PatternHandler:
     name = "cedar_default"
@@ -11,17 +17,12 @@ class PatternHandler:
     def pattern(self):
         walk = var.macro.movement.move
 
-        walk("w", 0.463)
-        walk("a", 0.116)
-        walk("s", 0.463)
-        walk("a", 0.116)
-        walk("w", 0.463)
-        walk("a", 0.116)
-        walk("s", 0.463)
-        walk("a", 0.116)
-        walk("w", 0.463)
-        walk("d", 0.463)
-        walk("s", 0.463)
+        for i in range(repeats):
+            walk("w", w_duration)
+            walk("a", side_duration)
+            walk("s", w_duration)
+            walk("a", side_duration)
+        walk("d", side_duration * repeats * 2)
 
     def realign(self):
         walk = var.macro.movement.move

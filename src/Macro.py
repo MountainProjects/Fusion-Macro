@@ -11,7 +11,6 @@ class Macro():
         self.fields = {}
 
         self.path = Path.Path(self)
-        self.convert = Convert.Convert(self)
         self.screen = Screen.Screen(self)
         self.movement = Movement.Movement(self)
         self.task = Task.Task(self)

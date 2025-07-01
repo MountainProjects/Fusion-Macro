@@ -6,7 +6,7 @@ class PathHandler:
     name = "cedar_cannon"
 
     def __init__(self):
-        print(self)
+        pass
 
     def start(self):
         camera_rotate = var.macro.movement.camera_rotate
@@ -20,6 +20,7 @@ class PathHandler:
         walk("w", 0.6)
         jump()
         walk("w", 1)
+        walk("a", 0.01)
         jump()
         walk("w", 0.65)
         press("e")
