@@ -1,5 +1,5 @@
 macro=None
-movespeed=20
+movespeed=32
 max_farming_repeat=99
 stockSettings = {}
 stockEnabled = False
