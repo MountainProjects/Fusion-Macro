@@ -413,6 +413,12 @@ class Interface():
 
         self.updatePatternDropdown()
 
+        if self.selectedPattern.get():
+            self.macro.pattern.set(self.selectedPattern.get())
+
+        if self.selectedPath.get():
+            self.macro.path.set(self.selectedPath.get())
+
         self.window.mainloop()
 
     def updatePlayStopButton(self):
