@@ -37,8 +37,9 @@ class Macro():
             if not win32gui.IsWindowVisible(hwnd) or not win32gui.IsWindowEnabled(hwnd):
                 return False
 
-            class_name = win32gui.GetClassName(hwnd)
-            return class_name == "Roblox"
+            title = win32gui.GetWindowText(hwnd)
+
+            return title == "Roblox"
         except Exception as e:
             print(f"[Window Check Failed] {e}")
             return False
