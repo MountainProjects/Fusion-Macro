@@ -5,4 +5,3 @@ stockSettings = {}
 stockEnabled = False
 movementPath = None
 parachuteType = "None"
-stockEnabled = False
