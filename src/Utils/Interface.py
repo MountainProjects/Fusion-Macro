@@ -414,7 +414,9 @@ class Interface():
         self.updatePatternDropdown()
 
         if self.selectedPattern.get():
-            self.macro.pattern.set(self.selectedPattern.get())
+            patternName = self.selectedPattern.get()
+            patternId = self.macro.pattern.database.getByQuery({"name": patternName})[0]["id"]
+            self.macro.pattern.set(patternId)
 
         if self.selectedPath.get():
             self.macro.path.set(self.selectedPath.get())
