@@ -14,8 +14,13 @@ class TaskHandler():
         movement_lib.move("w", 1.05)
         movement_lib.tap_key("e")
         print("Converting...")
+        sleep_time = 0
         while not screen_lib.is_backpack_empty() and var.macro.started:
             sleep(0.5)
+            sleep_time += 0.5
+            if sleep_time == 5 and screen_lib.is_backpack_full():
+                print("Macro is not converting, restarting...")
+                var.macro.restart()
         if not var.macro.started:
             return
         sleep(2)
