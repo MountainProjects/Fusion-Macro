@@ -54,6 +54,10 @@ class Macro():
 
     def end(self):
         self.started = False
+        
+        self.movement.stop_movement()
+        self.movement.release_mouse()
+
         self.path.end()
         self.loop.stop()
 
