@@ -20,7 +20,7 @@ class Loop():
         if self.process:
             self.stop()
 
-        self.process = multiprocessing.Process(target=self.loop, args=())
+        self.process = multiprocessing.Process(target=self.func, args=())
         self.process.start()
 
     def stop(self):
