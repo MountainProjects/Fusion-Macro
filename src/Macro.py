@@ -33,9 +33,8 @@ class Macro():
         try:
             hwnd = win32gui.GetForegroundWindow()
             if not hwnd:
-                return False  # No active window
+                return False
 
-            # OPTIONAL: Check if window is visible & enabled
             if not win32gui.IsWindowVisible(hwnd) or not win32gui.IsWindowEnabled(hwnd):
                 return False
 
