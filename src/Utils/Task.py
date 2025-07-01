@@ -37,6 +37,10 @@ class Task():
         
         if screen_lib.is_backpack_full():
             return "Convert"
+        
+        if var.stockEnabled:
+            return "Shop"
+
         return "Farm"
     
     def set(self, task=None):

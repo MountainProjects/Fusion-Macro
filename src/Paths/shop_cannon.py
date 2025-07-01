@@ -3,7 +3,7 @@ import var
 
 @var.macro.path()
 class PathHandler:
-    name = "cedar_cannon"
+    name = "shop_cannon"
 
     def __init__(self):
         pass
@@ -17,18 +17,18 @@ class PathHandler:
         check_image = var.macro.screen.find_image_on_region
 
         var.macro.paths["cannon_default"].start()
+        camera_rotate(150)
         press("e")
-        sleep(0.9)
+        
+        sleep(1.5)
+
         jump()
-        sleep(8)
+        sleep(0.5)
         jump()
-        walk("w", 8.124)
-        accuracy = check_image("src/assets/CorrectPos_Cedar.png", (555, 260, 10,10))
-        if accuracy < 0.2:
-            return False
-        sleep(1)
-        camera_rotate(158)
-        walk("w", 2.44)
+        sleep(0.2)
+        jump()
+        walk("w", 1.5)
+        
         return True
 
     def end(self):
