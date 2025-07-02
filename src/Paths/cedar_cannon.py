@@ -18,7 +18,7 @@ class PathHandler:
 
         var.macro.paths["cannon_default"].start()
         press("e")
-        sleep(0.96)
+        sleep(0.98)
 
         jump()
         sleep(8)

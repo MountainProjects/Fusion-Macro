@@ -37,7 +37,7 @@ class Movement():
         if aligned:
             self.align_spawn_position()
         else:
-            self.camera_rotate(-15)
+            self.camera_rotate(-15.6)
             self.align_spawn_position()
 
         
