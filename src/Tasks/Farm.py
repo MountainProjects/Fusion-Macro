@@ -1,5 +1,5 @@
 import var
-
+import time
 
 @var.macro.task()
 class TaskHandler():
@@ -21,6 +21,8 @@ class TaskHandler():
             var.macro.restart()
             return
         
+        var.loopStarted = time.time()
+
         print("Starting farm...")
         var.macro.movement.hold_mouse()
         #var.macro.pattern.set(var.macro.pattern.current)

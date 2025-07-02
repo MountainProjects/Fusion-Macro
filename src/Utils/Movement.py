@@ -54,9 +54,6 @@ class Movement():
         var.keyboard.release("w")
         var.keyboard.release("d")
 
-        self.move("a", 0.75)
-        self.move("s", 4.15)
-
     def stop_movement(self):
         var.keyboard.release("w")
         var.keyboard.release("a")

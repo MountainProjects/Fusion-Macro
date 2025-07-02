@@ -16,6 +16,7 @@ class PathHandler:
 
         check_image = var.macro.screen.find_image_on_region
 
+        var.macro.paths["spawn"].start()
         var.macro.paths["cannon_default"].start()
         press("e")
         sleep(0.98)
