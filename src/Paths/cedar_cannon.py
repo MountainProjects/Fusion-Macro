@@ -19,12 +19,14 @@ class PathHandler:
         var.macro.paths["spawn"].start()
         var.macro.paths["cannon_default"].start()
         press("e")
-        sleep(0.98)
+        sleep(0.92)
 
         jump()
         sleep(8)
         jump()
-        walk("w", 8.124)
+        walk("w", 6.124)
+        walk("a", 0.3)
+        walk("w", 2)
         accuracy = check_image("src/assets/CorrectPos_Cedar.png", (555, 260, 10,10))
         if accuracy < 0.2:
             return False

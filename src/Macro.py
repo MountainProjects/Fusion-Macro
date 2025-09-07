@@ -1,6 +1,7 @@
 from Utils import Screen, Path, Movement, Task, Interface, Loop, Pattern, Field
 import win32gui
 from pynput.keyboard import Listener
+import var
 
 class Macro():
     def __init__(self):
@@ -46,6 +47,7 @@ class Macro():
             return False
 
     def start(self):
+        var.loopStarted = 0
         self.field.start()
         self.task.start()
         self.path.start()
