@@ -2,6 +2,8 @@ from time import *
 from pynput.keyboard import Key, Controller as KeyboardController
 from pynput.mouse import Button, Controller as MouseController
 
+import pyautogui
+import cv2
 import ctypes
 import var
 import threading
@@ -90,7 +92,13 @@ class Movement():
         var.keyboard.release(Key.shift_l)
 
     def move(self, key, duration):
-        mult = 32 / var.movespeed
+        buffs = self.Macro.screen.get_speed_buff()
+        base_speed = var.movespeed
+
+        new_speed = base_speed + 3 * buffs
+
+        mult = 32 / new_speed
+    
         var.keyboard.press(key)
         sleep(duration * mult)
         var.keyboard.release(key)

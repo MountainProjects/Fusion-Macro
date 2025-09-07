@@ -24,9 +24,9 @@ class PathHandler:
         jump()
         sleep(8)
         jump()
-        walk("w", 6.124)
+        walk("w", 0.624)
         walk("a", 0.3)
-        walk("w", 2)
+        walk("w", 7.5)
         accuracy = check_image("src/assets/CorrectPos_Cedar.png", (555, 260, 10,10))
         if accuracy < 0.2:
             return False

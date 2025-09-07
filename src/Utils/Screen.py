@@ -7,6 +7,14 @@ import cv2
 
 class Screen():
     def __init__(self, Macro):
+        self.SpeedTemplates = {}
+        for file in os.listdir("src/assets/speeds"):
+            if file.endswith(".png") or file.endswith(".jpg"):
+                speed = int(os.path.splitext(file)[0])
+                path = os.path.join("src/assets/speeds", file)
+                img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+                self.SpeedTemplates[speed] = img
+
         self.Macro = Macro
 
     def is_backpack_full(self):
@@ -70,6 +78,32 @@ class Screen():
         screenshot = pyautogui.screenshot(region=(x, y, 1, 1))
         color = screenshot.getpixel((0, 0))
         return color
+
+    def get_speed_buff(self):
+        OFFSET_X = 0
+        OFFSET_Y = 0
+        WIDTH = 200
+        HEIGHT = 100
+        THRESHOLD = 0.75
+
+        screenshot = pyautogui.screenshot(region=(OFFSET_X, pyautogui.size()[1]-OFFSET_Y-HEIGHT, WIDTH, HEIGHT))
+        screenshot_gray = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2GRAY)
+        
+        best_val = 0
+        best_speed = 0
+        best_loc = (0, 0)
+
+        for speed, template in self.SpeedTemplates.items():
+            res = cv2.matchTemplate(screenshot_gray, template, cv2.TM_CCOEFF_NORMED)
+            _, max_val, _, max_loc = cv2.minMaxLoc(res)
+            if max_val > best_val:
+                best_val = max_val
+                best_speed = speed
+                best_loc = max_loc
+
+        if best_val < THRESHOLD:
+            return 0
+        return best_speed
 
     def find_image_on_region(self, image_path, region):
         """
