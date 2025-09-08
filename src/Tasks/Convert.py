@@ -17,9 +17,17 @@ class TaskHandler():
         movement_lib.move("a", 0.75)
         movement_lib.move("s", 0.85)
         movement_lib.tap_key("e")
-        print("Converting...")
+        
+        TIMEOUT_TIME = 90
+        start_time = time()
+
         while not screen_lib.is_backpack_empty():
             sleep(0.5)
+
+            if time() - start_time >= TIMEOUT_TIME:
+                print("Converting not succesful, resetting character...")
+                var.macro.restart()
+                return
         
         if not var.macro.started:
             return
