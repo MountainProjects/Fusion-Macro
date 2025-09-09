@@ -15,6 +15,7 @@ class Movement():
     def __init__(self, Macro):
         self.Macro = Macro
 
+
     def correct(self):
         klid = ctypes.windll.user32.LoadKeyboardLayoutW("00000409", 1)
 
@@ -45,8 +46,8 @@ class Movement():
         
 
     def align_spawn_position(self):
-        self.move("w", 6)
-        self.move("d", 5)
+        self.move("w", 4)
+        self.move("d", 3)
 
         var.keyboard.press("w")
         var.keyboard.press("d")
@@ -71,15 +72,25 @@ class Movement():
         sleep(0.2)
         var.keyboard.tap(Key.enter)
 
+        sleep(0.5)
+
         #Расклик клавиатуры,
         var.keyboard.tap("w")
+        sleep(0.02)
         var.keyboard.tap("a")
+        sleep(0.02)
         var.keyboard.tap("s")
+        sleep(0.02)
         var.keyboard.tap("d")
+        sleep(0.02)
         var.keyboard.tap(Key.space)
+        sleep(0.02)
+        var.keyboard.tap("e")
 
     def tap_key(self, key:Key):
-        var.keyboard.tap(key)
+        var.keyboard.press(key)
+        sleep(0.05)
+        var.keyboard.release(key)
 
     def jump(self):
         var.keyboard.press(Key.space)
