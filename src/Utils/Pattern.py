@@ -51,7 +51,7 @@ class Pattern():
         repeats = 0
 
         while not screen.is_backpack_full() and self.macro.started:
-            if repeats >= var.max_farming_repeat and not not screen.is_backpack_full():
+            if repeats >= var.max_farming_repeat and not screen.is_backpack_full():
                 var.macro.restart()
                 return
 
