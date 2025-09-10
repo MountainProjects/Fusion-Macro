@@ -4,10 +4,14 @@ import pyautogui
 import numpy as np
 import var
 import cv2
+import threading
+import time
 
 class Screen():
     def __init__(self, Macro):
         self.SpeedTemplates = {}
+        self.speed_buff = 0
+        self.speed_thread = None
         for file in os.listdir("src/assets/speeds"):
             if file.endswith(".png") or file.endswith(".jpg"):
                 speed = int(os.path.splitext(file)[0])
@@ -79,12 +83,32 @@ class Screen():
         color = screenshot.getpixel((0, 0))
         return color
 
+    def task_spawn(self, func, *args):
+        thread = threading.Thread(target=func, args=args, daemon=True)
+        thread.start()
+        return thread
+
+    def start_speed_thread(self):
+        self.stop_speed_check = False
+        self.speed_thread = self.task_spawn(self.speed_check_loop)
+
+    def stop_speed_thread(self):
+        self.stop_speed_check = True
+        if self.speed_thread and self.speed_thread.is_alive():
+            self.speed_thread.join(timeout=1.0)
+
+    def speed_check_loop(self):
+        """Бесконечный цикл проверки скорости"""
+        while not self.stop_speed_check and getattr(self.Macro, 'started', True):
+            self.speed_buff = self.get_speed_buff()
+            time.sleep(0.2)  # Проверяем каждые 0.5 секунды
+
     def get_speed_buff(self):
         OFFSET_X = 0
         OFFSET_Y = 0
         WIDTH = 200
         HEIGHT = 100
-        THRESHOLD = 0.75
+        THRESHOLD = 0.97
 
         screenshot = pyautogui.screenshot(region=(OFFSET_X, pyautogui.size()[1]-OFFSET_Y-HEIGHT, WIDTH, HEIGHT))
         screenshot_gray = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2GRAY)

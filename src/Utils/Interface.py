@@ -20,6 +20,7 @@ class Interface():
         self.selectedPattern = None
         self.selectedPath = None
         self.playStopButton = None
+        self.listener = None
 
         # Initialize pysondb database for settings
         self.settings_db = db.getDb("settings.json")
@@ -29,8 +30,13 @@ class Interface():
             self.toggleMacro()
 
     def to_async(self):
-        with Listener(on_press = lambda key: self.on_key_press(key)) as listener:
-            listener.join()
+        self.listener = Listener(on_press=lambda key: self.on_key_press(key))
+        self.listener.start()
+        self.listener.join()
+
+    def stop_listener(self):
+        if self.listener:
+            self.listener.stop()
 
     def start(self):
         threading.Thread(target=self.to_async, daemon=True).start()
@@ -40,7 +46,6 @@ class Interface():
         self.window.geometry("500x400")  # increased height for scrollable stock tab
         self.window.resizable(False, False)
 
-        self.window.bind("<F5>", lambda event: self.toggleMacro())
         self.window.iconbitmap("src/assets/Icon.ico")
 
         self.selectedField = tk.StringVar()
@@ -62,6 +67,8 @@ class Interface():
 
         ttk.Label(fieldFrame, text="Select Field:").grid(row=0, column=0, sticky="w", padx=5, pady=(5, 2))
         fieldNames = [f["name"] for f in self.macro.field.database.getAll()]
+
+        self.window.protocol("WM_DELETE_WINDOW", self.on_window_close)  # ← Добавь эту строку
 
         self.fieldDropdown = ttk.Combobox(
             fieldFrame,
@@ -433,21 +440,34 @@ class Interface():
 
         self.window.mainloop()
 
+    def on_window_close(self):
+        self.stop_listener()  # Останавливаем listener
+        self.window.destroy()  # Закрываем окно
+
     def updatePlayStopButton(self):
-        if self.macro.started:
-            self.playStopButton.config(text="Stop (F5)", bg="#E53935")
-        else:
-            self.playStopButton.config(text="Play (F5)", bg="#4CAF50")
+        try:
+            if self.playStopButton and self.playStopButton.winfo_exists():
+                if self.macro.started:
+                    self.playStopButton.config(text="Stop (F5)", bg="#E53935")
+                else:
+                    self.playStopButton.config(text="Play (F5)", bg="#4CAF50")
+        except:
+            pass
 
     def toggleMacro(self):
-        if self.macro.started:
-            self.macro.end()
-        else:
-            if not self.selectedField.get() or not self.selectedPattern.get():
-                messagebox.showerror("Error", "Please select Field, Pattern before starting.")
-                return
-            self.macro.restart()
-        self.updatePlayStopButton()
+        try:
+            if self.macro.started:
+                self.macro.end() 
+            else:
+                if not self.selectedField.get() or not self.selectedPattern.get():
+                    messagebox.showerror("Error", "Please select Field, Pattern before starting.")
+                    return
+                self.macro.start()
+            
+            self.window.after(0, self.updatePlayStopButton)
+    
+        except Exception as e:
+            print(f"Toggle macro error: {e}")
 
     def onFieldSelected(self, event):
         selected = self.selectedField.get()

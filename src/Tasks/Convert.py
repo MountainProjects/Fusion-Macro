@@ -15,10 +15,11 @@ class TaskHandler():
         screen_lib = var.macro.screen
 
         movement_lib.move("a", 0.75)
+        movement_lib.tap_key("e")
         movement_lib.move("s", 0.85)
         movement_lib.tap_key("e")
         
-        TIMEOUT_TIME = 90
+        TIMEOUT_TIME = 120
         start_time = time()
 
         while not screen_lib.is_backpack_empty():
@@ -26,9 +27,8 @@ class TaskHandler():
 
             if time() - start_time >= TIMEOUT_TIME:
                 print("Converting not succesful, resetting character...")
-                var.macro.restart()
                 return
-        
+
         if not var.macro.started:
             return
         

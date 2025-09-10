@@ -15,7 +15,6 @@ class TaskHandler():
 
         if not result:
             print("Farm path failed, restarting...")
-            var.macro.restart()
             return
         
         var.macro.movement.tap_key("e")

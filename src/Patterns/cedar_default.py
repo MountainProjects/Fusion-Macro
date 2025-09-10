@@ -3,9 +3,9 @@ import var
 
 #SETTINGS:
 w_duration = 1.253
-side_duration = 0.325
+side_duration = 0.275
 
-repeats = 3
+repeats = 5
 
 @var.macro.pattern()
 class PatternHandler:

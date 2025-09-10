@@ -2,11 +2,14 @@ from Utils import Screen, Path, Movement, Task, Interface, Loop, Pattern, Field
 import win32gui
 from pynput.keyboard import Listener
 import var
+import time
+import traceback
 
 class Macro():
     def __init__(self):
         self.started = False
         self.thread = None
+        self.is_restarting = False 
 
         self.paths = {}
         self.tasks = {}
@@ -25,10 +28,12 @@ class Macro():
         @self.loop()
         def main_loop():
             if not self.IsRobloxFocused():
+                time.sleep(1)
                 return
 
             self.movement.align_spawn()
             self.task.set()
+            time.sleep(0.5)
 
     def IsRobloxFocused(self) -> bool:
         try:
@@ -46,26 +51,42 @@ class Macro():
             print(f"[Window Check Failed] {e}")
             return False
 
-    def start(self):
-        var.loopStarted = 0
+    def initialize(self):
         self.field.start()
-        self.task.start()
+        self.task.start() 
         self.path.start()
         self.pattern.start()
         self.interface.start()
+        self.screen.start_speed_thread()
+
+    def start(self): 
+        print("Starting macro...")
+        self.started = True
+        var.loopStarted = 0
+        self.loop.start()
+        print("Macro started!")
 
     def end(self):
+        if not self.started:
+            return
+            
         self.started = False
-        
         self.movement.stop_movement()
         self.movement.release_mouse()
-
-        self.path.end()
         self.loop.stop()
+        print("Macro stopped!")
 
     def restart(self):
-        self.end()
-        self.started = True
-        
-        self.loop.start()
+        if self.is_restarting:
+            print("Already restarting, skipping...")
+            return
+            
+        self.is_restarting = True
+        try:
+            print("Restarting macro...")
+            self.end()
+            time.sleep(2)
+            self.start()
+        finally:
+            self.is_restarting = False
         

@@ -19,7 +19,7 @@ class PathHandler:
         var.macro.paths["spawn"].start()
         var.macro.paths["cannon_default"].start()
         press("e")
-        sleep(0.92)
+        sleep(0.83)
 
         jump()
         sleep(8)
@@ -33,6 +33,7 @@ class PathHandler:
         sleep(1)
         camera_rotate(158)
         walk("w", 2.4)
+        sleep(0.3)
         return True
 
     def end(self):

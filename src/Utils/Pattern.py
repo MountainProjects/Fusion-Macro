@@ -52,7 +52,6 @@ class Pattern():
 
         while not screen.is_backpack_full() and self.macro.started:
             if repeats >= var.max_farming_repeat and not screen.is_backpack_full():
-                var.macro.restart()
                 return
 
             if repeats != 0 and repeats % self.current.realign_repeats == 0:

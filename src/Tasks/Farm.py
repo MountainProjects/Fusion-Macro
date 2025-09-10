@@ -18,7 +18,6 @@ class TaskHandler():
         result = current_path.start()
         if not result:
             print("Farm path failed, restarting...")
-            var.macro.restart()
             return
         
         var.loopStarted = time.time()

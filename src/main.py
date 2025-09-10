@@ -13,4 +13,4 @@ sys.path.append(project_root)
 
 if __name__ == "__main__":
     var.macro = Macro()
-    var.macro.start()
+    var.macro.initialize()
