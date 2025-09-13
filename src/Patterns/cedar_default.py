@@ -5,7 +5,7 @@ import var
 w_duration = 1.253
 side_duration = 0.275
 
-repeats = 5
+repeats = 3
 
 @var.macro.pattern()
 class PatternHandler:

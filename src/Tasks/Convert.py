@@ -19,7 +19,7 @@ class TaskHandler():
         movement_lib.move("s", 0.85)
         movement_lib.tap_key("e")
         
-        TIMEOUT_TIME = 120
+        TIMEOUT_TIME = 4*60
         start_time = time()
 
         while not screen_lib.is_backpack_empty():

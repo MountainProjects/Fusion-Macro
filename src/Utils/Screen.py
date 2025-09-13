@@ -22,38 +22,42 @@ class Screen():
         self.Macro = Macro
 
     def is_backpack_full(self):
-        x, y = (1808, 47)
+        x, y = (1905, 110)
         color = self.get_screen_color((x, y))
-        return color == (140, 39, 39)
+        return color == (80, 24, 24)
 
     def is_backpack_empty(self):
-        x, y = (1617, 47)
+        x, y = (1716, 110)
         color = self.get_screen_color((x, y))
         return color == (40,40,40)
 
     def isCorrectStartPos(self):
-        screen_width, screen_height = 1920, 1080  # или твоя функция получения размера
 
+        RECT_WIDTH = 80
+        RECT_HEIGHT = 270
+        OFFSET_X = 10
+        OFFSET_Y = -240
+
+
+        screen_width, screen_height = pyautogui.size()
         center_x = screen_width // 2
+        center_y = screen_height // 2
 
-        # Зона: ширина 200 пикселей, вся высота
-        region = (
-            center_x - 100,
-            0,
-            center_x + 100,
-            screen_height
-        )
-        
-        day_score = self.find_template_similarity("src/assets/CorrectPosDay.png", region)
-        night_score = self.find_template_similarity("src/assets/CorrectPosNight.png", region)
+        # Прямоугольник из твоих настроек
+        left   = center_x - RECT_WIDTH // 2 + OFFSET_X
+        top    = center_y - RECT_HEIGHT // 2 + OFFSET_Y
+        right  = left + RECT_WIDTH
+        bottom = top + RECT_HEIGHT
 
-        print(f"DAY: {day_score*100}%")
-        print(f"NIGHT: {night_score*100}%")
+        region = (left, top, right, bottom)
 
-        if day_score >= 0.5 or night_score >= 0.5:
-            return True        
-        else:
-            return False
+        score = self.find_template_similarity("src/assets/CenterPos.png", region)
+
+        print(f"CENTER: {score*100:.2f}%")
+
+        return score >= 0.9
+
+
 
         
     def find_template_similarity(self, template_path, region):
@@ -129,38 +133,36 @@ class Screen():
             return 0
         return best_speed
 
-    def find_image_on_region(self, image_path, region):
-        """
-        Возвращает процент совпадения области на экране с указанным изображением
-        :param image_path: Путь к PNG-изображению
-        :param region: (x, y, width, height)
-        """
-        x, y, width, height = region
+    def find_image_on_region(self, image_path, region, is_debug: bool = False):
+        import datetime
 
+        x, y, width, height = region
         total_pixels = width * height
 
         img = Image.open(image_path).convert("RGB")
+        screenshot = pyautogui.screenshot(region=(x, y, width, height)).convert("RGB")
 
-        screenshot = pyautogui.screenshot(region=(x,y, width, height)).convert("RGB")
-
-         #ТЕСТ ФУНКЦИЯ ДЛЯ СКРИНА ТОГО ЧТО ОНО ПРОВЕРЯЕТ (ДЕБАГ)
-        screenshot.save("src/assets/DEBUG.png")
+        if is_debug:
+            os.makedirs("src/assets", exist_ok=True)
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            screenshot.save(f"src/assets/DEBUG_{timestamp}.png")
 
         if img.size != screenshot.size:
             return False
-        
+
         img_numpy = np.array(img).astype(int)
         screen_numpy = np.array(screenshot).astype(int)
 
         difference = np.abs(img_numpy - screen_numpy)
         differency_sum = difference.sum(axis=2)
 
-        matches = differency_sum <= 10 # Я ХЗ 10 ЭТО ТИПА tolerance мне чат гпт так сказал
+        matches = differency_sum <= 10  # tolerance
         match_count = np.sum(matches)
 
         match_percent = (match_count / total_pixels)
 
         return match_percent
+
 
     def make_screenshot(self, region, save:bool = True):
         x, y, width, height = region

@@ -32,23 +32,20 @@ class Movement():
         var.mouse.scroll(0, 5)
 
     def align_spawn(self):
-        print("Starting align_spawn")
-        self.reset_character()
-        time.sleep(4.5)
+        correct = False
 
-        print("Checking position...")
-        aligned = self.Macro.screen.isCorrectStartPos()
-        print(f"Position aligned: {aligned}")
+        while not correct:
+            self.reset_character()
+            time.sleep(3)
+            correct = self.Macro.screen.isCorrectStartPos()
         
-        if aligned:
-            print("Aligning position...")
-            self.align_spawn_position()
-        else:
-            print("Rotating camera and aligning...")
-            self.camera_rotate(-15.6)
-            self.align_spawn_position()
+            if correct:
+                print("Aligned")
+                self.camera_rotate(-15.6)
+                self.align_spawn_position()
+                break
+
         
-        print("align_spawn completed")  # ← Убедитесь, что это сообщение появляется
 
     def align_spawn_position(self):
         self.move("w", 4)
@@ -74,20 +71,20 @@ class Movement():
         var.keyboard.press(Key.esc)
         time.sleep(0.05)
         var.keyboard.release(Key.esc)
-        time.sleep(0.5)
+        time.sleep(0.1)
 
         var.keyboard.press('r')
         time.sleep(0.05)
         var.keyboard.release('r')
-        time.sleep(0.5)
+        time.sleep(0.1)
 
         var.keyboard.press(Key.enter)
         time.sleep(0.05)
         var.keyboard.release(Key.enter)
-        time.sleep(0.5)
+        time.sleep(0.1)
 
         # Исправлено: для буквенных клавиш используем строки, для специальных - Key.*
-        for key in ["w", "a", "s", "d", Key.space, "e"]:
+        for key in ["w", "a", "s", "d", Key.space]:
             var.keyboard.press(key)
             time.sleep(0.03)
             var.keyboard.release(key)
